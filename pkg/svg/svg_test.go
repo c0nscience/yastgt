@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_ParsePath(t *testing.T) {
+func Test_Path(t *testing.T) {
 	// given
-	data = `
+	data := `
 		<svg
 			xmlns:dc="http://purl.org/dc/elements/1.1/"
 			xmlns:cc="http://creativecommons.org/ns#"
@@ -46,4 +46,20 @@ func Test_ParsePath(t *testing.T) {
 
 	// then
 	assert.NoError(t, err)
+	g := subj.G
+	assert.Len(t, g, 1)
+	p := g[0].Path[0]
+	assert.Equal(t, p.D, "M 1.5420259,10.163793 10.4375,31.906968")
+
+	t.Run("parse path", func(t *testing.T) {
+		// when
+		p.Parse()
+
+		t.Run("validate M", func(t *testing.T) {
+			// then
+			assert.Len(t, p.M, 2)
+			assert.Equal(t, p.M[0], svg.Point{X: 1.5420259, Y: 10.163793})
+			assert.Equal(t, p.M[1], svg.Point{X: 10.4375, Y: 31.906968})
+		})
+	})
 }
