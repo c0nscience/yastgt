@@ -8,4 +8,5 @@ type SVG struct {
 
 type G struct {
 	Path []*Path `xml:"path"`
+	Rect []*Rect `xml:"rect"`
 }
