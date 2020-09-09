@@ -14,7 +14,8 @@ type Path struct {
 	V []float64
 }
 
-func (me *Path) Parse() {
+//TODO: extract a populator ??
+func (me *Path) Populate() {
 	parts := strings.Split(me.D, " ")
 
 	isM := false //TODO: this is not scalable ... think of something diferent

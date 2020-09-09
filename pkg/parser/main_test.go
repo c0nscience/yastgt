@@ -1,14 +1,14 @@
-package svg_test
+package parser_test
 
 import (
-	"encoding/xml"
 	"testing"
 
+	"github.com/c0nscience/yastgt/pkg/parser"
 	"github.com/c0nscience/yastgt/pkg/svg"
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_Path(t *testing.T) {
+func Test_PathParser(t *testing.T) {
 	// given
 	data := `
 		<svg
@@ -39,27 +39,17 @@ func Test_Path(t *testing.T) {
 			</g>
 		</svg>
 	`
-
 	// when
-	subj := svg.SVG{}
-	err := xml.Unmarshal([]byte(data), &subj)
+
+	subj, err := parser.SVGfrom(data)
 
 	// then
 	assert.NoError(t, err)
-	g := subj.G
-	assert.Len(t, g, 1)
-	p := g[0].Path[0]
-	assert.Equal(t, p.D, "M 1.5420259,10.163793 10.4375,31.906968")
+	g := subj.G[0]
+	path := g.Path[0]
 
-	t.Run("parse path", func(t *testing.T) {
-		// when
-		p.Parse()
+	assert.Len(t, path.M, 2)
+	assert.Equal(t, path.M[0], svg.Point{X: 1.5420259, Y: 10.163793})
+	assert.Equal(t, path.M[1], svg.Point{X: 10.4375, Y: 31.906968})
 
-		t.Run("validate M", func(t *testing.T) {
-			// then
-			assert.Len(t, p.M, 2)
-			assert.Equal(t, p.M[0], svg.Point{X: 1.5420259, Y: 10.163793})
-			assert.Equal(t, p.M[1], svg.Point{X: 10.4375, Y: 31.906968})
-		})
-	})
 }
