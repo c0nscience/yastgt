@@ -18,6 +18,10 @@ func SVGfrom(data string) (*svg.SVG, error) {
 	return res, nil
 }
 
+func M(data string, rec *[]svg.Point) {
+
+}
+
 // type svgXml struct {
 // 	G []*gXml `xml:"g"`
 // }
