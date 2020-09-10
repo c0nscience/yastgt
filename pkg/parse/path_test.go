@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/c0nscience/yastgt/pkg/parse"
-	"github.com/c0nscience/yastgt/pkg/svg"
+	"github.com/c0nscience/yastgt/pkg/parse/svg"
 	"github.com/stretchr/testify/assert"
 )
 

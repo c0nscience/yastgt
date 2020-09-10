@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/c0nscience/yastgt/pkg/svg"
+	"github.com/c0nscience/yastgt/pkg/parse/svg"
 )
 
 var mRe = regexp.MustCompile(`M [0-9,\. ]*`)
