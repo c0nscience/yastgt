@@ -20,9 +20,9 @@ func main() {
 		log.Fatalf("Could not read file %s. Error: %s", args[1], err.Error())
 	}
 
-	s := parse.ToSvg(x)
+	s := parse.SVG(x)
 
-	cmds := transform.ToGcode(s)
+	cmds := transform.Gcode(s)
 
 	var buff bytes.Buffer
 	for _, c := range cmds {

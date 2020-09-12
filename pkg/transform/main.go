@@ -18,12 +18,11 @@ func head() []gcode.Cmd {
 	return res
 }
 
-func ToGcode(svg svg.SVG) []gcode.Cmd {
+var abs = true
+
+func Gcode(svg svg.SVG) []gcode.Cmd {
 	res := append([]gcode.Cmd{}, head()...)
 
-	for _, g := range svg.G {
-		res = append(res, fromPath(g.Path)...)
-	}
 	res = append(res, fromPath(svg.Path)...)
 
 	res = append(res, gcode.G28("XY"))
@@ -33,20 +32,39 @@ func ToGcode(svg svg.SVG) []gcode.Cmd {
 func fromPath(pths []svg.Path) []gcode.Cmd {
 	res := []gcode.Cmd{}
 	for _, pth := range pths {
-		mp := pth.M
-		if len(pth.M) >= 1 {
-			res = append(res, gcode.G0(mp[0]))
-			mp = mp[1:]
+		pts := pth.Points
+		if len(pts) >= 1 {
+			pt, ok := pts[0].(svg.Point)
+			if !ok {
+				pt = pts[0].(svg.CubicPoint).CP
+			}
+			res = append(res, gcode.G0(pt))
+			pts = pts[1:]
 		}
 
 		res = append(res, penDwn...)
 
-		for _, p := range mp {
-			res = append(res, gcode.G0(p))
-		}
-
-		for _, p := range pth.L {
-			res = append(res, gcode.G0(p))
+		for _, p := range pts {
+			switch pt := p.(type) {
+			case svg.Point:
+				if abs && pt.Rel {
+					res = append(res, gcode.G91)
+					abs = false
+				}
+				if !abs && !pt.Rel {
+					res = append(res, gcode.G90)
+					abs = true
+				}
+				res = append(res, gcode.G0(pt))
+			case svg.CubicPoint:
+				if pt.Rel && abs {
+					res = append(res, gcode.G91)
+				}
+				if !pt.Rel && !abs {
+					res = append(res, gcode.G90)
+				}
+				res = append(res, gcode.G5(pt))
+			}
 		}
 
 		res = append(res, penUp...)

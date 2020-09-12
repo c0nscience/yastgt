@@ -6,60 +6,72 @@ import (
 	"strings"
 
 	"github.com/c0nscience/yastgt/pkg/parse/svg"
+	"github.com/c0nscience/yastgt/pkg/reader/xml"
 )
 
-var mRe = regexp.MustCompile(`M [0-9,\. ]*`)
+var re = regexp.MustCompile(`[MLHVZC]\s{0,1}[0-9,\. ]*`)
 
-func FindM(s string) string {
-	return strings.Trim(mRe.FindString(s), " ")
-}
+func Path(p xml.Path) svg.Path {
+	d := p.D
+	res := svg.Path{
+		Points: []interface{}{},
+	}
 
-func M(s string) []svg.Point {
-	pts := strings.Split(s, " ")[1:]
-	res := []svg.Point{}
+	for len(d) > 0 {
+		m := re.FindString(d)
+		prts := strings.Split(strings.Trim(m, " "), " ")
+		cp := cp(res.Points)
+		switch prts[0] {
+		case "M", "L":
+			for _, prt := range prts[1:] {
+				res.Points = append(res.Points, Point(prt))
+			}
+		case "H":
+			for _, prt := range prts[1:] {
+				x, _ := strconv.ParseFloat(prt, 64)
+				res.Points = append(res.Points, svg.Point{X: x, Y: cp.Y})
+			}
+		case "V":
+			for _, prt := range prts[1:] {
+				y, _ := strconv.ParseFloat(prt, 64)
+				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y})
+			}
+		case "Z":
+			fp, ok := res.Points[0].(svg.Point)
+			if !ok {
+				fp = res.Points[0].(svg.CubicPoint).CP
+			}
+			res.Points = append(res.Points, fp)
+		case "C":
+			rst := prts[1:]
+			for i := 0; i < (len(rst) / 3); i++ {
+				cp := svg.CubicPoint{
+					P1: Point(rst[i*3]),
+					P2: Point(rst[i*3+1]),
+					CP: Point(rst[i*3+2]),
+				}
+				res.Points = append(res.Points, cp)
+			}
+		}
 
-	for _, pt := range pts {
-		res = append(res, Point(pt))
+		d = d[len(m):]
+
+		if len(m) == 0 {
+			d = ""
+		}
 	}
 
 	return res
 }
 
-var lRe = regexp.MustCompile(`L [0-9,\. ]*`)
-
-func FindL(s string) string {
-	return strings.Trim(lRe.FindString(s), " ")
-}
-
-func L(s string) []svg.Point {
-	pts := strings.Split(s, " ")[1:]
-	res := []svg.Point{}
-
-	for _, pt := range pts {
-		res = append(res, Point(pt))
+func cp(arr []interface{}) svg.Point {
+	if len(arr) == 0 {
+		return svg.Point{}
 	}
-
+	lst := arr[len(arr)-1]
+	res, ok := lst.(svg.Point)
+	if !ok {
+		res = lst.(svg.CubicPoint).CP
+	}
 	return res
-}
-
-var hRe = regexp.MustCompile(`H [0-9]*\.?[0-9]+`)
-
-func FindH(s string) string {
-	return strings.Trim(hRe.FindString(s), " ")
-}
-
-func H(s string) (f float64) {
-	f, _ = strconv.ParseFloat(strings.Split(s, " ")[1], 64)
-	return
-}
-
-var vRe = regexp.MustCompile(`V [0-9]*\.?[0-9]+`)
-
-func FindV(s string) string {
-	return strings.Trim(vRe.FindString(s), " ")
-}
-
-func V(s string) (f float64) {
-	f, _ = strconv.ParseFloat(strings.Split(s, " ")[1], 64)
-	return
 }

@@ -7,34 +7,34 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="line.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   width="350mm"
-   height="350mm"
-   viewBox="0 0 350 350"
+   id="SVGRoot"
    version="1.1"
-   id="SVGRoot">
+   viewBox="0 0 350 350"
+   height="350mm"
+   width="350mm"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="line.svg">
   <defs
      id="defs1409" />
   <sodipodi:namedview
-     inkscape:window-maximized="0"
-     inkscape:window-y="2"
-     inkscape:window-x="236"
-     inkscape:window-height="1040"
-     inkscape:window-width="1375"
-     showgrid="false"
-     inkscape:document-rotation="0"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="mm"
-     inkscape:cy="560"
-     inkscape:cx="400"
-     inkscape:zoom="0.35"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     id="base"
      pagecolor="#ffffff"
-     id="base" />
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="400"
+     inkscape:cy="560"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1375"
+     inkscape:window-height="1008"
+     inkscape:window-x="110"
+     inkscape:window-y="479"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata1412">
     <rdf:RDF>
@@ -43,21 +43,27 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     id="layer1">
     <path
-       id="path2024"
-       d="M 38.553572,43.845239 268.36309,71.815475 127.75595,247.19642 Z"
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#000000;stroke-width:0.245702px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 58.948638,210.59939 288.78944,186.48205 148.16316,35.259806 Z"
+       id="lower_triangle" />
     <path
-       id="path2026"
-       d="M 303.89285,297.84524 154.97024,117.92857 40.065475,270.63094 185.96428,283.48215"
+       sodipodi:nodetypes="cccc"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.275423px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 306.16071,124.05044 157.2381,319.0119 42.333332,153.54043 169.33333,187.23958"
+       id="upper_triangle" />
+    <path
+       sodipodi:nodetypes="ccscc"
+       id="path836"
+       d="M 306.16071,284.23809 42.333333,283.48215 c 0,0 -46.8690472,-152.70239 5.291666,-217.714293 C 99.785714,0.75595238 244.92857,92.22619 244.92857,92.22619 l -0.75595,148.92262"
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   </g>
 </svg>
