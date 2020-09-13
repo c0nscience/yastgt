@@ -1,5 +1,5 @@
 package svg
 
 type Path struct {
-	Points []interface{}
+	Points []PointI
 }

@@ -14,7 +14,7 @@ func Test_Transform(t *testing.T) {
 	s := svg.SVG{
 		Path: []svg.Path{
 			{
-				Points: []interface{}{
+				Points: []svg.PointI{
 					svg.Point{X: 0.0, Y: 0.0},
 					svg.Point{X: 10.0, Y: 0.0},
 					svg.Point{X: 10.0, Y: 10.0},
@@ -28,7 +28,7 @@ func Test_Transform(t *testing.T) {
 				},
 			},
 			{
-				Points: []interface{}{
+				Points: []svg.PointI{
 					svg.Point{X: 10, Y: 10},
 					svg.Point{X: 5, Y: 2, Rel: true},
 					svg.Point{X: 7, Y: 8, Rel: true},

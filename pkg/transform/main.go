@@ -34,10 +34,7 @@ func fromPath(pths []svg.Path) []gcode.Cmd {
 	for _, pth := range pths {
 		pts := pth.Points
 		if len(pts) >= 1 {
-			pt, ok := pts[0].(svg.Point)
-			if !ok {
-				pt = pts[0].(svg.CubicPoint).CP
-			}
+			pt := pts[0].CurrPt()
 			res = append(res, gcode.G0(pt))
 			pts = pts[1:]
 		}

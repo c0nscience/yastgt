@@ -13,3 +13,9 @@ func Point(s string) svg.Point {
 	y, _ := strconv.ParseFloat(crds[1], 64)
 	return svg.Point{X: x, Y: y}
 }
+
+func RelPoint(s string) svg.Point {
+	p := Point(s)
+	p.Rel = true
+	return p
+}

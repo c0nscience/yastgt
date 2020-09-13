@@ -9,12 +9,12 @@ import (
 	"github.com/c0nscience/yastgt/pkg/reader/xml"
 )
 
-var re = regexp.MustCompile(`[MLHVZC]\s{0,1}[0-9,\. ]*`)
+var re = regexp.MustCompile(`[MLHVZCmlhvc]\s{0,1}[\-0-9,\. ]*`)
 
 func Path(p xml.Path) svg.Path {
 	d := p.D
 	res := svg.Path{
-		Points: []interface{}{},
+		Points: []svg.PointI{},
 	}
 
 	for len(d) > 0 {
@@ -26,21 +26,32 @@ func Path(p xml.Path) svg.Path {
 			for _, prt := range prts[1:] {
 				res.Points = append(res.Points, Point(prt))
 			}
+		case "m", "l":
+			for _, prt := range prts[1:] {
+				res.Points = append(res.Points, RelPoint(prt))
+			}
 		case "H":
 			for _, prt := range prts[1:] {
 				x, _ := strconv.ParseFloat(prt, 64)
 				res.Points = append(res.Points, svg.Point{X: x, Y: cp.Y})
+			}
+		case "h":
+			for _, prt := range prts[1:] {
+				x, _ := strconv.ParseFloat(prt, 64)
+				res.Points = append(res.Points, svg.Point{X: x, Y: cp.Y, Rel: true})
 			}
 		case "V":
 			for _, prt := range prts[1:] {
 				y, _ := strconv.ParseFloat(prt, 64)
 				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y})
 			}
-		case "Z":
-			fp, ok := res.Points[0].(svg.Point)
-			if !ok {
-				fp = res.Points[0].(svg.CubicPoint).CP
+		case "v":
+			for _, prt := range prts[1:] {
+				y, _ := strconv.ParseFloat(prt, 64)
+				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y, Rel: true})
 			}
+		case "Z":
+			fp := res.Points[0].CurrPt()
 			res.Points = append(res.Points, fp)
 		case "C":
 			rst := prts[1:]
@@ -49,6 +60,17 @@ func Path(p xml.Path) svg.Path {
 					P1: Point(rst[i*3]),
 					P2: Point(rst[i*3+1]),
 					CP: Point(rst[i*3+2]),
+				}
+				res.Points = append(res.Points, cp)
+			}
+		case "c":
+			rst := prts[1:]
+			for i := 0; i < (len(rst) / 3); i++ {
+				cp := svg.CubicPoint{
+					P1:  Point(rst[i*3]),
+					P2:  Point(rst[i*3+1]),
+					CP:  Point(rst[i*3+2]),
+					Rel: true,
 				}
 				res.Points = append(res.Points, cp)
 			}
@@ -64,14 +86,10 @@ func Path(p xml.Path) svg.Path {
 	return res
 }
 
-func cp(arr []interface{}) svg.Point {
+func cp(arr []svg.PointI) svg.Point {
 	if len(arr) == 0 {
 		return svg.Point{}
 	}
 	lst := arr[len(arr)-1]
-	res, ok := lst.(svg.Point)
-	if !ok {
-		res = lst.(svg.CubicPoint).CP
-	}
-	return res
+	return lst.CurrPt()
 }
