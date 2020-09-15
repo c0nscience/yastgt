@@ -36,6 +36,13 @@ func Test_Unmarshal(t *testing.T) {
 				d="M 1.5420259,10.163793 10.4375,31.906968"
 				id="line"
 				inkscape:label="Line" />
+			<rect
+				y="105.83333"
+				x="41.577377"
+				height="91.470238"
+				width="133.80357"
+				id="rect4550"
+				style="fill:none;stroke:#000000;stroke-width:0.3" />
 		</g>
 		<path
 			sodipodi:nodetypes="cc"
@@ -43,16 +50,23 @@ func Test_Unmarshal(t *testing.T) {
 			d="M 4,5 9,3"
 			id="line"
 			inkscape:label="Line" />
+		<rect
+			y="10.583333"
+			x="4.577377"
+			height="91.470238"
+			width="133.80357"
+			id="rect4550"
+			style="fill:none;stroke:#000000;stroke-width:0.3" />
 	</svg>`
 
 	// when
 	subj, err := reader.Unmarshal([]byte(data))
 
+	assert.NoError(t, err)
 	t.Run("path from root", func(t *testing.T) {
 		p := subj.Path[0]
 
 		// then
-		assert.NoError(t, err)
 		assert.Equal(t, xml.Path{D: "M 4,5 9,3"}, p)
 	})
 
@@ -60,8 +74,19 @@ func Test_Unmarshal(t *testing.T) {
 		p := subj.G[0].Path[0]
 
 		// then
-		assert.NoError(t, err)
 		assert.Equal(t, xml.Path{D: "M 1.5420259,10.163793 10.4375,31.906968"}, p)
+	})
+
+	t.Run("rect from root", func(t *testing.T) {
+		r := subj.Rect[0]
+
+		assert.Equal(t, xml.Rect{X: 4.577377, Y: 10.583333, Height: 91.470238, Width: 133.80357}, r)
+	})
+
+	t.Run("rect from group", func(t *testing.T) {
+		r := subj.G[0].Rect[0]
+
+		assert.Equal(t, xml.Rect{X: 41.577377, Y: 105.83333, Height: 91.470238, Width: 133.80357}, r)
 	})
 
 }

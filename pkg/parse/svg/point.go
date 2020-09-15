@@ -2,6 +2,7 @@ package svg
 
 type PointI interface {
 	CurrPt() Point
+	Relative() bool
 }
 
 var _ PointI = CubicPoint{}
@@ -13,6 +14,10 @@ type Point struct {
 
 func (me Point) CurrPt() Point {
 	return me
+}
+
+func (me Point) Relative() bool {
+	return me.Rel
 }
 
 func (me Point) RelativeTo(p Point) Point {
@@ -33,4 +38,8 @@ type CubicPoint struct {
 
 func (me CubicPoint) CurrPt() Point {
 	return me.CP
+}
+
+func (me CubicPoint) Relative() bool {
+	return me.Rel
 }
