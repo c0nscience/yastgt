@@ -8,8 +8,9 @@ type PointI interface {
 var _ PointI = CubicPoint{}
 
 type Point struct {
-	X, Y float64
-	Rel  bool
+	X, Y   float64
+	Rel    bool
+	MoveTo bool
 }
 
 func (me Point) CurrPt() Point {

@@ -24,10 +24,10 @@ func M280(s string) Cmd {
 	return Cmd("M280 P0 S" + s)
 }
 
-func G0(p svg.Point) Cmd {
+func G0(p svg.Point, i int64) Cmd {
 	x := floatToString(p.X)
 	y := floatToString(p.Y)
-	return Cmd("G0 X" + x + " Y" + y)
+	return Cmd(fmt.Sprintf("G0 F%d X%s Y%s", i, x, y))
 }
 
 func G0F(f int) Cmd {
@@ -46,7 +46,7 @@ func floatToString(f float64) string {
 	return fmt.Sprintf("%.1f", f)
 }
 
-func G5(p svg.CubicPoint) Cmd {
+func G5(p svg.CubicPoint, i int64) Cmd {
 	x := floatToString(p.CP.X)
 	y := floatToString(p.CP.Y)
 	p1x := floatToString(p.P1.X)
@@ -61,5 +61,5 @@ func G5(p svg.CubicPoint) Cmd {
 		p2x = floatToString(p2.X)
 		p2y = floatToString(p2.Y)
 	}
-	return Cmd(fmt.Sprintf("G5 I%s J%s P%s Q%s X%s Y%s", p1x, p1y, p2x, p2y, x, y))
+	return Cmd(fmt.Sprintf("G5 F%d I%s J%s P%s Q%s X%s Y%s", i, p1x, p1y, p2x, p2y, x, y))
 }

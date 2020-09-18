@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,6 +14,8 @@ import (
 
 func main() {
 	args := os.Args
+	g0 := flag.Int64("g0s", int64(2000), "G0 feed rate")
+	g5 := flag.Int64("g5s", int64(100), "G5 feed rate")
 	b, err := ioutil.ReadFile(args[1])
 
 	x, err := reader.Unmarshal(b)
@@ -22,6 +25,8 @@ func main() {
 
 	s := parse.SVG(x)
 
+	transform.SetG0Speed(*g0)
+	transform.SetG5Speed(*g5)
 	cmds := transform.Gcode(s)
 
 	var buff bytes.Buffer

@@ -9,7 +9,7 @@ import (
 	"github.com/c0nscience/yastgt/pkg/reader/xml"
 )
 
-var re = regexp.MustCompile(`[MLHVZCmlhvc]\s{0,1}[\-0-9,\. ]*`)
+var re = regexp.MustCompile(`[MLHVZCmlhvc]\s{0,1}[\-0-9,\. e]*`)
 
 func Path(p xml.Path) svg.Path {
 	d := p.D
@@ -22,11 +22,19 @@ func Path(p xml.Path) svg.Path {
 		prts := strings.Split(strings.Trim(m, " "), " ")
 		cp := cp(res.Points)
 		switch prts[0] {
-		case "M", "L":
+		case "M":
+			for _, prt := range prts[1:] {
+				res.Points = append(res.Points, MoveTo(prt))
+			}
+		case "L":
 			for _, prt := range prts[1:] {
 				res.Points = append(res.Points, Point(prt))
 			}
-		case "m", "l":
+		case "m":
+			for _, prt := range prts[1:] {
+				res.Points = append(res.Points, RelMoveTo(prt))
+			}
+		case "l":
 			for _, prt := range prts[1:] {
 				res.Points = append(res.Points, RelPoint(prt))
 			}
@@ -52,6 +60,7 @@ func Path(p xml.Path) svg.Path {
 			}
 		case "Z":
 			fp := res.Points[0].CurrPt()
+			fp.MoveTo = false
 			res.Points = append(res.Points, fp)
 		case "C":
 			rst := prts[1:]
