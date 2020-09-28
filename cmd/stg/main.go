@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/c0nscience/yastgt/pkg/generate"
 	"github.com/c0nscience/yastgt/pkg/parse"
 	"github.com/c0nscience/yastgt/pkg/reader"
 	"github.com/c0nscience/yastgt/pkg/transform"
@@ -14,16 +15,23 @@ import (
 
 func main() {
 	args := os.Args
-	g0 := flag.Int64("g0s", int64(2000), "G0 feed rate")
-	g5 := flag.Int64("g5s", int64(100), "G5 feed rate")
-	b, err := ioutil.ReadFile(args[1])
-
-	x, err := reader.Unmarshal(b)
+	g0 := flag.Int64("g0s", int64(4000), "G0 feed rate")
+	g5 := flag.Int64("g5s", int64(10), "G5 feed rate")
+	b, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
-		log.Fatalf("Could not read file %s. Error: %s", args[1], err.Error())
+		log.Fatalf("couldnt read input")
+	}
+	x, _ := reader.Unmarshal(b)
+
+	f, err := os.Open(args[1])
+	if err != nil {
+		log.Fatal("could not read image")
 	}
 
+	fill := generate.FromPNG(f)
+
 	s := parse.SVG(x)
+	s.Path = append(s.Path, fill...)
 
 	transform.SetG0Speed(*g0)
 	transform.SetG5Speed(*g5)
@@ -35,8 +43,5 @@ func main() {
 		buff.WriteString("\n")
 	}
 
-	err = ioutil.WriteFile(args[2], buff.Bytes(), 0644)
-	if err != nil {
-		log.Fatalf("Could not write file %s. Error: %s", args[2], err.Error())
-	}
+	os.Stdout.Write(buff.Bytes())
 }

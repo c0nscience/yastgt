@@ -23,6 +23,8 @@ func Gcode(svg svg.SVG) []gcode.Cmd {
 
 	res = append(res, fromPath(svg.Path)...)
 
+	res = append(res, penUp...)
+
 	res = append(res, gcode.G28("XY"))
 	return res
 }
@@ -56,8 +58,6 @@ func fromPath(pths []svg.Path) []gcode.Cmd {
 				res = append(res, gcode.G5(pt, g5Speed))
 			}
 		}
-
-		res = append(res, penUp...)
 	}
 
 	return res

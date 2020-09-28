@@ -9,7 +9,7 @@ import (
 	"github.com/c0nscience/yastgt/pkg/reader/xml"
 )
 
-var re = regexp.MustCompile(`[MLHVZCmlhvc]\s{0,1}[\-0-9,\. e]*`)
+var re = regexp.MustCompile(`[MLHVZCmlhvcz]\s{0,1}[\-0-9,\. e]*`)
 
 func Path(p xml.Path) svg.Path {
 	d := p.D
@@ -23,16 +23,24 @@ func Path(p xml.Path) svg.Path {
 		cp := cp(res.Points)
 		switch prts[0] {
 		case "M":
-			for _, prt := range prts[1:] {
-				res.Points = append(res.Points, MoveTo(prt))
+			for i, prt := range prts[1:] {
+				if i == 0 {
+					res.Points = append(res.Points, MoveTo(prt))
+				} else {
+					res.Points = append(res.Points, Point(prt))
+				}
 			}
 		case "L":
 			for _, prt := range prts[1:] {
 				res.Points = append(res.Points, Point(prt))
 			}
 		case "m":
-			for _, prt := range prts[1:] {
-				res.Points = append(res.Points, RelMoveTo(prt))
+			for i, prt := range prts[1:] {
+				if i == 0 {
+					res.Points = append(res.Points, RelMoveTo(prt))
+				} else {
+					res.Points = append(res.Points, RelPoint(prt))
+				}
 			}
 		case "l":
 			for _, prt := range prts[1:] {
@@ -58,9 +66,10 @@ func Path(p xml.Path) svg.Path {
 				y, _ := strconv.ParseFloat(prt, 64)
 				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y, Rel: true})
 			}
-		case "Z":
+		case "Z", "z":
 			fp := res.Points[0].CurrPt()
 			fp.MoveTo = false
+			fp.Rel = false
 			res.Points = append(res.Points, fp)
 		case "C":
 			rst := prts[1:]

@@ -76,3 +76,75 @@ func Test_ExponentialValue(t *testing.T) {
 		}, subj.Points)
 	})
 }
+
+func Test_CloseRelativeFirstMoveTo(t *testing.T) {
+	// given
+	d := "m 10,20 L 10,10 5,10 Z"
+	xml := xml.Path{
+		D: d,
+	}
+	// when
+	subj := parse.Path(xml)
+
+	// then
+	assert.Equal(t, []svg.PointI{
+		svg.Point{X: 10, Y: 20, MoveTo: true, Rel: true},
+		svg.Point{X: 10, Y: 10},
+		svg.Point{X: 5, Y: 10},
+		svg.Point{X: 10, Y: 20},
+	}, subj.Points)
+}
+
+func Test_CloseRelativeFirstMoveToWithRelativCloseCmd(t *testing.T) {
+	// given
+	d := "m 10,20 L 10,10 5,10 z"
+	xml := xml.Path{
+		D: d,
+	}
+	// when
+	subj := parse.Path(xml)
+
+	// then
+	assert.Equal(t, []svg.PointI{
+		svg.Point{X: 10, Y: 20, MoveTo: true, Rel: true},
+		svg.Point{X: 10, Y: 10},
+		svg.Point{X: 5, Y: 10},
+		svg.Point{X: 10, Y: 20},
+	}, subj.Points)
+}
+
+func Test_ConsecutiveRelativeMoveToCmds(t *testing.T) {
+	// given
+	d := "m 10,20 20,20 30,30 40,30"
+	xml := xml.Path{
+		D: d,
+	}
+	// when
+	subj := parse.Path(xml)
+
+	// then
+	assert.Equal(t, []svg.PointI{
+		svg.Point{X: 10, Y: 20, MoveTo: true, Rel: true},
+		svg.Point{X: 20, Y: 20, Rel: true},
+		svg.Point{X: 30, Y: 30, Rel: true},
+		svg.Point{X: 40, Y: 30, Rel: true},
+	}, subj.Points)
+}
+
+func Test_ConsecutiveMoveToCmds(t *testing.T) {
+	// given
+	d := "M 10,20 20,20 30,30 40,30"
+	xml := xml.Path{
+		D: d,
+	}
+	// when
+	subj := parse.Path(xml)
+
+	// then
+	assert.Equal(t, []svg.PointI{
+		svg.Point{X: 10, Y: 20, MoveTo: true},
+		svg.Point{X: 20, Y: 20},
+		svg.Point{X: 30, Y: 30},
+		svg.Point{X: 40, Y: 30},
+	}, subj.Points)
+}

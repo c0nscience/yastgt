@@ -61,9 +61,6 @@ func Test_Transform(t *testing.T) {
 		gcode.Cmd("M280 P0 S30"),
 		gcode.Cmd("M400"),
 		gcode.Cmd("G5 F100 I-1.0 J2.0 P1.0 Q-2.0 X2.0 Y2.0"),
-		gcode.Cmd("M400"),
-		gcode.Cmd("M280 P0 S150"),
-		gcode.Cmd("M400"),
 
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S150"),
