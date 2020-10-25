@@ -14,9 +14,11 @@ import (
 )
 
 func main() {
-	args := os.Args
+	fillInfo := flag.String("f", "", "file with fill information")
 	g0 := flag.Int64("g0s", int64(4000), "G0 feed rate")
 	g5 := flag.Int64("g5s", int64(100), "G5 feed rate")
+	flag.Parse()
+
 	b, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
 		log.Fatalf("couldnt read input")
@@ -25,8 +27,8 @@ func main() {
 
 	s := parse.SVG(x)
 
-	if len(args) > 1 {
-		f, err := os.Open(args[1])
+	if len(*fillInfo) > 0 {
+		f, err := os.Open(*fillInfo)
 		if err == nil {
 			fill := generate.FromPNG(f)
 			s.Path = append(s.Path, fill...)

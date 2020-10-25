@@ -1,6 +1,7 @@
 package transform
 
 import (
+	"github.com/c0nscience/yastgt/pkg/bezier"
 	"github.com/c0nscience/yastgt/pkg/parse/svg"
 	"github.com/c0nscience/yastgt/pkg/transform/gcode"
 )
@@ -43,7 +44,6 @@ func fromPath(pths []svg.Path) []gcode.Cmd {
 	var cp svg.PointI
 	for _, pth := range pths {
 		for _, p := range pth.Points {
-			detMode(p, &res)
 			switch pt := p.(type) {
 			case svg.Point:
 				if pt.MoveTo {
@@ -56,26 +56,14 @@ func fromPath(pths []svg.Path) []gcode.Cmd {
 					res = append(res, penDwn...)
 				}
 			case svg.CubicPoint:
-				res = append(res, gcode.G5(pt, cp.CurrPt(), g5Speed))
+				length := bezier.Length(cp.CurrPt(), pt)
+				res = append(res, gcode.G5(pt, cp.CurrPt(), int64(length*float64(g5Speed))))
 			}
 			cp = p
 		}
 	}
 
 	return res
-}
-
-var abs = true
-
-func detMode(p svg.PointI, res *[]gcode.Cmd) {
-	if abs && p.Relative() {
-		*res = append(*res, gcode.G91)
-		abs = false
-	}
-	if !abs && !p.Relative() {
-		*res = append(*res, gcode.G90)
-		abs = true
-	}
 }
 
 func home() []gcode.Cmd {
