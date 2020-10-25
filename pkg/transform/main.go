@@ -81,13 +81,13 @@ func detMode(p svg.PointI, res *[]gcode.Cmd) {
 func home() []gcode.Cmd {
 	res := []gcode.Cmd{}
 
-	res = append(res, gcode.Cmd("M906 X200"))
-	res = append(res, gcode.Cmd("M906 Y200"))
-	res = append(res, gcode.Cmd("M906 I1 Y200"))
+	res = append(res, "M906 X200")
+	res = append(res, "M906 Y200")
+	res = append(res, "M906 I1 Y200")
 	res = append(res, gcode.G28("XY"))
-	res = append(res, gcode.Cmd("M906 X800"))
-	res = append(res, gcode.Cmd("M906 Y800"))
-	res = append(res, gcode.Cmd("M906 I1 Y800"))
+	res = append(res, "M906 X800")
+	res = append(res, "M906 Y800")
+	res = append(res, "M906 I1 Y800")
 
 	return res
 }

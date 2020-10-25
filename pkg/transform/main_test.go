@@ -47,7 +47,13 @@ func Test_Transform(t *testing.T) {
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S150"),
 		gcode.Cmd("M400"),
+		gcode.Cmd("M906 X200"),
+		gcode.Cmd("M906 Y200"),
+		gcode.Cmd("M906 I1 Y200"),
 		gcode.Cmd("G28 XY"),
+		gcode.Cmd("M906 X800"),
+		gcode.Cmd("M906 Y800"),
+		gcode.Cmd("M906 I1 Y800"),
 		gcode.Cmd("G0 F2000 X0.0 Y0.0"),
 		gcode.Cmd("G0 F2000 X10.0 Y0.0"),
 		gcode.Cmd("G0 F2000 X10.0 Y10.0"),
@@ -79,7 +85,13 @@ func Test_Transform(t *testing.T) {
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S150"),
 		gcode.Cmd("M400"),
+		gcode.Cmd("M906 X200"),
+		gcode.Cmd("M906 Y200"),
+		gcode.Cmd("M906 I1 Y200"),
 		gcode.Cmd("G28 XY"),
+		gcode.Cmd("M906 X800"),
+		gcode.Cmd("M906 Y800"),
+		gcode.Cmd("M906 I1 Y800"),
 	}
 
 	// when

@@ -34,38 +34,21 @@ func Path(p xml.Path) svg.Path {
 			for _, prt := range prts[1:] {
 				res.Points = append(res.Points, Point(prt))
 			}
-		case "m":
-			for i, prt := range prts[1:] {
-				if i == 0 {
-					res.Points = append(res.Points, RelMoveTo(prt))
-				} else {
-					res.Points = append(res.Points, RelPoint(prt))
-				}
-			}
-		case "l":
-			for _, prt := range prts[1:] {
-				res.Points = append(res.Points, RelPoint(prt))
-			}
 		case "H":
 			for _, prt := range prts[1:] {
 				x, _ := strconv.ParseFloat(prt, 64)
 				res.Points = append(res.Points, svg.Point{X: x, Y: cp.Y})
-			}
-		case "h":
-			for _, prt := range prts[1:] {
-				x, _ := strconv.ParseFloat(prt, 64)
-				res.Points = append(res.Points, svg.Point{X: x, Y: cp.Y, Rel: true})
 			}
 		case "V":
 			for _, prt := range prts[1:] {
 				y, _ := strconv.ParseFloat(prt, 64)
 				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y})
 			}
-		case "v":
-			for _, prt := range prts[1:] {
-				y, _ := strconv.ParseFloat(prt, 64)
-				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y, Rel: true})
-			}
+		//case "Z":
+		//	fp := res.Points[0].CurrPt()
+		//	fp.MoveTo = false
+		//	fp.Rel = false
+		//	res.Points = append(res.Points, fp)
 		case "C":
 			rst := prts[1:]
 			for i := 0; i < (len(rst) / 3); i++ {
@@ -73,17 +56,6 @@ func Path(p xml.Path) svg.Path {
 					P1: Point(rst[i*3]),
 					P2: Point(rst[i*3+1]),
 					CP: Point(rst[i*3+2]),
-				}
-				res.Points = append(res.Points, cp)
-			}
-		case "c":
-			rst := prts[1:]
-			for i := 0; i < (len(rst) / 3); i++ {
-				cp := svg.CubicPoint{
-					P1:  Point(rst[i*3]),
-					P2:  Point(rst[i*3+1]),
-					CP:  Point(rst[i*3+2]),
-					Rel: true,
 				}
 				res.Points = append(res.Points, cp)
 			}
