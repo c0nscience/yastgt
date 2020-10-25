@@ -16,6 +16,7 @@ func Test_FromPNG(t *testing.T) {
 	// when
 
 	//152*303px
+	generate.SetGap(10.0)
 	subj := generate.FromPNG(f)
 
 	// then
@@ -68,25 +69,43 @@ func Test_FromPNG(t *testing.T) {
 	assert.InDelta(t, 55, subj[7].Points[1].CurrPt().X, delta)
 	assert.InDelta(t, 100, subj[7].Points[1].CurrPt().Y, delta)
 }
-func Test_FromPNGWithMultipleShapesInALine(t *testing.T) {
+
+func Test_HorizontalFill(t *testing.T) {
 	// given
 	f, _ := os.Open("../../resource/fill-test2.png")
 	// when
 
 	//152*303px
+	generate.SetGap(10.0)
 	subj := generate.FromPNG(f)
 
-	// then
-	assert.InDelta(t, 55, subj[0].Points[0].CurrPt().X, delta)
-	assert.InDelta(t, 30, subj[0].Points[0].CurrPt().Y, delta)
-	assert.True(t, subj[0].Points[0].CurrPt().MoveTo)
-	assert.InDelta(t, 95, subj[0].Points[1].CurrPt().X, delta)
-	assert.InDelta(t, 30, subj[0].Points[1].CurrPt().Y, delta)
+	t.Run("two shapes in the same row", func(t *testing.T) {
+		// then
+		assert.InDelta(t, 55, subj[0].Points[0].CurrPt().X, delta)
+		assert.InDelta(t, 30, subj[0].Points[0].CurrPt().Y, delta)
+		assert.True(t, subj[0].Points[0].CurrPt().MoveTo)
+		assert.InDelta(t, 95, subj[0].Points[1].CurrPt().X, delta)
+		assert.InDelta(t, 30, subj[0].Points[1].CurrPt().Y, delta)
 
-	assert.InDelta(t, 130, subj[1].Points[0].CurrPt().X, delta)
-	assert.InDelta(t, 30, subj[1].Points[0].CurrPt().Y, delta)
-	assert.True(t, subj[1].Points[0].CurrPt().MoveTo)
-	assert.InDelta(t, 170, subj[1].Points[1].CurrPt().X, delta)
-	assert.InDelta(t, 30, subj[1].Points[1].CurrPt().Y, delta)
+		assert.InDelta(t, 130, subj[1].Points[0].CurrPt().X, delta)
+		assert.InDelta(t, 30, subj[1].Points[0].CurrPt().Y, delta)
+		assert.True(t, subj[1].Points[0].CurrPt().MoveTo)
+		assert.InDelta(t, 170, subj[1].Points[1].CurrPt().X, delta)
+		assert.InDelta(t, 30, subj[1].Points[1].CurrPt().Y, delta)
+	})
+
+	t.Run("direction of back way is correct", func(t *testing.T) {
+		assert.InDelta(t, 170, subj[2].Points[0].CurrPt().X, delta)
+		assert.InDelta(t, 40, subj[2].Points[0].CurrPt().Y, delta)
+		assert.True(t, subj[2].Points[0].CurrPt().MoveTo)
+		assert.InDelta(t, 130, subj[2].Points[1].CurrPt().X, delta)
+		assert.InDelta(t, 40, subj[2].Points[1].CurrPt().Y, delta)
+
+		assert.InDelta(t, 95, subj[3].Points[0].CurrPt().X, delta)
+		assert.InDelta(t, 40, subj[3].Points[0].CurrPt().Y, delta)
+		assert.True(t, subj[3].Points[0].CurrPt().MoveTo)
+		assert.InDelta(t, 55, subj[3].Points[1].CurrPt().X, delta)
+		assert.InDelta(t, 40, subj[3].Points[1].CurrPt().Y, delta)
+	})
 
 }

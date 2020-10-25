@@ -66,11 +66,6 @@ func Path(p xml.Path) svg.Path {
 				y, _ := strconv.ParseFloat(prt, 64)
 				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y, Rel: true})
 			}
-		case "Z", "z":
-			fp := res.Points[0].CurrPt()
-			fp.MoveTo = false
-			fp.Rel = false
-			res.Points = append(res.Points, fp)
 		case "C":
 			rst := prts[1:]
 			for i := 0; i < (len(rst) / 3); i++ {

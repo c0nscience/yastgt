@@ -13,6 +13,10 @@ import (
 var dpi = 96.0
 var gap = 10.0
 
+func SetGap(f float64) {
+	gap = f
+}
+
 func FromPNG(f *os.File) []svg.Path {
 	img, _ := png.Decode(f)
 	bounds := img.Bounds()
@@ -59,9 +63,12 @@ func FromPNG(f *os.File) []svg.Path {
 
 		if fnd {
 			if bwd {
-				for _, lb := range l[y] {
+				rev := make([]*lineBounds, len(l[y]))
+				for i, lb := range l[y] {
 					lb.flip()
+					rev[len(l[y])-i-1] = lb
 				}
+				l[y] = rev
 			}
 			bwd = !bwd
 		}

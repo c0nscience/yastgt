@@ -46,20 +46,14 @@ func floatToString(f float64) string {
 	return fmt.Sprintf("%.1f", f)
 }
 
-func G5(p svg.CubicPoint, i int64) Cmd {
+func G5(p svg.CubicPoint, cp svg.Point, i int64) Cmd {
 	x := floatToString(p.CP.X)
 	y := floatToString(p.CP.Y)
-	p1x := floatToString(p.P1.X)
-	p1y := floatToString(p.P1.Y)
-	p2x := floatToString(p.P2.X)
-	p2y := floatToString(p.P2.Y)
-	if !p.Rel {
-		p1 := p.P1.RelativeTo(p.CP)
-		p2 := p.P2.RelativeTo(p.CP)
-		p1x = floatToString(p1.X)
-		p1y = floatToString(p1.Y)
-		p2x = floatToString(p2.X)
-		p2y = floatToString(p2.Y)
-	}
+	p1 := p.P1.RelativeTo(cp)
+	p2 := p.P2.RelativeTo(p.CP)
+	p1x := floatToString(p1.X)
+	p1y := floatToString(p1.Y)
+	p2x := floatToString(p2.X)
+	p2y := floatToString(p2.Y)
 	return Cmd(fmt.Sprintf("G5 F%d I%s J%s P%s Q%s X%s Y%s", i, p1x, p1y, p2x, p2y, x, y))
 }

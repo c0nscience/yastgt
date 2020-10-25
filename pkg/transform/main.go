@@ -25,7 +25,7 @@ func Gcode(svg svg.SVG) []gcode.Cmd {
 
 	res = append(res, penUp...)
 
-	res = append(res, gcode.G28("XY"))
+	res = append(res, home()...)
 	return res
 }
 
@@ -33,13 +33,14 @@ func head() []gcode.Cmd {
 	res := []gcode.Cmd{gcode.G21, gcode.G90, gcode.G17}
 
 	res = append(res, penUp...)
-	res = append(res, gcode.G28("XY"))
+	res = append(res, home()...)
 
 	return res
 }
 
 func fromPath(pths []svg.Path) []gcode.Cmd {
 	res := []gcode.Cmd{}
+	var cp svg.PointI
 	for _, pth := range pths {
 		for _, p := range pth.Points {
 			detMode(p, &res)
@@ -55,8 +56,9 @@ func fromPath(pths []svg.Path) []gcode.Cmd {
 					res = append(res, penDwn...)
 				}
 			case svg.CubicPoint:
-				res = append(res, gcode.G5(pt, g5Speed))
+				res = append(res, gcode.G5(pt, cp.CurrPt(), g5Speed))
 			}
+			cp = p
 		}
 	}
 
@@ -74,4 +76,18 @@ func detMode(p svg.PointI, res *[]gcode.Cmd) {
 		*res = append(*res, gcode.G90)
 		abs = true
 	}
+}
+
+func home() []gcode.Cmd {
+	res := []gcode.Cmd{}
+
+	res = append(res, gcode.Cmd("M906 X200"))
+	res = append(res, gcode.Cmd("M906 Y200"))
+	res = append(res, gcode.Cmd("M906 I1 Y200"))
+	res = append(res, gcode.G28("XY"))
+	res = append(res, gcode.Cmd("M906 X800"))
+	res = append(res, gcode.Cmd("M906 Y800"))
+	res = append(res, gcode.Cmd("M906 I1 Y800"))
+
+	return res
 }
