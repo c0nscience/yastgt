@@ -8,14 +8,14 @@ import (
 
 var penUp = gcode.Servo("150")
 var penDwn = gcode.Servo("30")
-var g0Speed int64 = 2000
-var g5Speed int64 = 100
+var g0Speed float64 = 2000
+var g5Speed float64 = 100
 
-func SetG0Speed(i int64) {
+func SetG0Speed(i float64) {
 	g0Speed = i
 }
 
-func SetG5Speed(i int64) {
+func SetG5Speed(i float64) {
 	g5Speed = i
 }
 
@@ -57,7 +57,7 @@ func fromPath(pths []svg.Path) []gcode.Cmd {
 				}
 			case svg.CubicPoint:
 				length := bezier.Length(cp.CurrPt(), pt)
-				res = append(res, gcode.G5(pt, cp.CurrPt(), int64(length*float64(g5Speed))))
+				res = append(res, gcode.G5(pt, cp.CurrPt(), g5Speed/length))
 			}
 			cp = p
 		}

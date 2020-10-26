@@ -17,14 +17,12 @@ func point(t, start, c1, c2, end float64) float64 {
 }
 
 func Length(start svg.Point, c svg.CubicPoint) float64 {
-	var t float64
-	var steps int
 	var p svg.Point
 	var prevP svg.Point
+	steps := 10
 	length := 0.0
-	steps = 10
 	for i := 0; i <= steps; i++ {
-		t = float64(i) / float64(steps)
+		t := float64(i) / float64(steps)
 		p.X = point(t, start.X, c.P1.X,
 			c.P2.X, c.CP.X)
 		p.Y = point(t, start.Y, c.P1.Y,
