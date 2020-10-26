@@ -1,3 +1,13 @@
+# TODO
+
+* multiple fill patterns
+    * horizontal (red)
+    * vertical (green)
+    * both (blue)
+* automatically rasterize svg to derive fill pattern
+* build and deploy binaries to github
+* think about pen change
+
 # Yet another SVG to G-code tool
 
 As the name suggest this tool generates g-code for our xy-plotter directly from an SVG file with the following features:
@@ -12,3 +22,24 @@ As the name suggest this tool generates g-code for our xy-plotter directly from 
 > Meaning this tool is not meant as a general purpose solution to generate g-code out of svg files.
 
 # Usage
+
+```text
+NAME:
+   stg - Generates GCode from SVG
+
+USAGE:
+   main [global options] command [command options] [arguments...]
+
+COMMANDS:
+   help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --svg value          Path to the SVG file to generate GCode from.
+   --out value          Path to the output GCode file.
+   --fill value         PNG file containing the fill information.
+   --curveSpeed value   Divisor to normalize the speed of curves. (default: 3000)
+   --linearSpeed value  Flat feed value for linear move commands. (default: 4000)
+   --gap value          Gap between fill lines. (default: 10)
+   --threshold value    Minimum line length for fill pattern. (default: 4)
+   --help, -h           show help (default: false)
+```

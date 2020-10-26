@@ -14,6 +14,7 @@ const (
 	G91  Cmd = "G91"
 	G17  Cmd = "G17"
 	M400 Cmd = "M400"
+	M18  Cmd = "M18"
 )
 
 func G28(s string) Cmd {

@@ -5,45 +5,48 @@ import (
 	"image/png"
 	"math"
 	"os"
-	"sort"
 
 	"github.com/c0nscience/yastgt/pkg/parse/svg"
 )
 
 var dpi = 96.0
 var gap = 10.0
+var threshold = 4.0
 
 func SetGap(f float64) {
 	gap = f
 }
 
+func SetThreshold(f float64) {
+	threshold = f
+}
+
 func FromPNG(f *os.File) []svg.Path {
 	img, _ := png.Decode(f)
 	bounds := img.Bounds()
-	l := map[int][]*lineBounds{}
+	l := [][]*lineBounds{}
 	gapAsPx := mmToPX(gap)
 	bwd := false
+	curr := []*lineBounds{}
 	for y := bounds.Min.Y; y < bounds.Max.Y; y = y + gapAsPx {
 		fnd := false
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 			r, _, _, _ := img.At(x, y).RGBA()
 			s := uint8(r)
 			if s == 255 {
-				lbs, ok := l[y]
+				if !fnd {
+					curr = []*lineBounds{}
+				}
 				fnd = true
-				if !ok {
-					l[y] = []*lineBounds{}
+
+				if len(curr) == 0 {
+					curr = append(curr, &lineBounds{y: y, from: x, to: x})
 				}
 
-				if len(lbs) == 0 {
-					lbs = append(l[y], &lineBounds{from: x, to: x})
-					l[y] = lbs
-				}
-
-				lb := lbs[len(lbs)-1]
+				lb := curr[len(curr)-1]
 				if lb.done {
-					nlb := &lineBounds{from: x, to: x}
-					l[y] = append(l[y], nlb)
+					nlb := &lineBounds{y: y, from: x, to: x}
+					curr = append(curr, nlb)
 					lb = nlb
 				}
 
@@ -51,9 +54,8 @@ func FromPNG(f *os.File) []svg.Path {
 					lb.to = x
 				}
 			} else {
-				lbs, ok := l[y]
-				if ok {
-					lb := lbs[len(lbs)-1]
+				if fnd {
+					lb := curr[len(curr)-1]
 					if !lb.done {
 						lb.done = true
 					}
@@ -63,46 +65,50 @@ func FromPNG(f *os.File) []svg.Path {
 
 		if fnd {
 			if bwd {
-				rev := make([]*lineBounds, len(l[y]))
-				for i, lb := range l[y] {
+				rev := make([]*lineBounds, len(curr))
+				for i, lb := range curr {
 					lb.flip()
-					rev[len(l[y])-i-1] = lb
+					rev[len(curr)-i-1] = lb
 				}
-				l[y] = rev
+				curr = rev
 			}
 			bwd = !bwd
+			l = append(l, curr)
 		}
 
 	}
 
 	res := []svg.Path{}
 
-	for y, v := range l {
-		ymm := pxToMM(y)
+	for _, v := range l {
 		for _, lb := range v {
+			from := pxToMM(lb.from)
+			to := pxToMM(lb.to)
+			if math.Abs(from-to) < threshold {
+				continue
+			}
+
 			res = append(res, svg.Path{
 				Points: []svg.PointI{
-					svg.Point{X: pxToMM(lb.from), Y: ymm, MoveTo: true},
-					svg.Point{X: pxToMM(lb.to), Y: ymm},
+					svg.Point{X: from, Y: pxToMM(lb.y), MoveTo: true},
+					svg.Point{X: to, Y: pxToMM(lb.y)},
 				},
 			})
 		}
 	}
 
-	//TODO: connect paths
-	sort.Slice(res, byY(res))
-
 	return res
 }
 
 type lineBounds struct {
+	y    int
 	from int
 	to   int
 	done bool
 }
 
 func (me *lineBounds) String() string {
-	return fmt.Sprintf("[%d,%d]", me.from, me.from)
+	return fmt.Sprintf("[%d,%d]", me.from, me.to)
 }
 
 func (me *lineBounds) flip() {
@@ -133,10 +139,4 @@ func inchToPX(inch float64) int {
 
 func mmToPX(mm float64) int {
 	return inchToPX(mmToInch(mm))
-}
-
-func byY(a []svg.Path) func(int, int) bool {
-	return func(i, j int) bool {
-		return a[i].Points[0].CurrPt().Y < a[j].Points[0].CurrPt().Y
-	}
 }

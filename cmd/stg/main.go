@@ -19,6 +19,8 @@ const (
 	flagFillPNGFile = "fill"
 	flagCurveSpeed  = "curveSpeed"
 	flagLinearSpeed = "linearSpeed"
+	flagGap         = "gap"
+	flagThreshold   = "threshold"
 )
 
 func main() {
@@ -32,6 +34,8 @@ func main() {
 			&cli.StringFlag{Name: flagFillPNGFile, Usage: "PNG file containing the fill information."},
 			&cli.Float64Flag{Name: flagCurveSpeed, Value: 3000.0, Usage: "Divisor to normalize the speed of curves."},
 			&cli.Float64Flag{Name: flagLinearSpeed, Value: 4000.0, Usage: "Flat feed value for linear move commands."},
+			&cli.Float64Flag{Name: flagGap, Value: 10.0, Usage: "Gap between fill lines."},
+			&cli.Float64Flag{Name: flagThreshold, Value: 4.0, Usage: "Minimum line length for fill pattern."},
 		},
 		Action: func(c *cli.Context) error {
 			curveSpeed := c.Float64(flagCurveSpeed)
@@ -39,6 +43,8 @@ func main() {
 			svgFilePath := c.String(flagSvgFilePath)
 			fillFilePath := c.String(flagFillPNGFile)
 			outFilePath := c.String(flagOutFilePath)
+			gap := c.Float64(flagGap)
+			threshold := c.Float64(flagThreshold)
 
 			b, err := ioutil.ReadFile(svgFilePath)
 			if err != nil {
@@ -53,6 +59,8 @@ func main() {
 				if err != nil {
 					return err
 				}
+				generate.SetGap(gap)
+				generate.SetThreshold(threshold)
 				fill := generate.FromPNG(f)
 				s.Path = append(s.Path, fill...)
 			}

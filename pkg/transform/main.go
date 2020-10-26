@@ -27,6 +27,7 @@ func Gcode(svg svg.SVG) []gcode.Cmd {
 	res = append(res, penUp...)
 
 	res = append(res, home()...)
+	res = append(res, gcode.M18)
 	return res
 }
 
