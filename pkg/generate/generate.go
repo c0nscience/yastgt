@@ -21,6 +21,10 @@ func SetThreshold(f float64) {
 	threshold = f
 }
 
+func SetDpi(f float64) {
+	dpi = f
+}
+
 func FromPNG(f *os.File) []svg.Path {
 	img, _ := png.Decode(f)
 	bounds := img.Bounds()

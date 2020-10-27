@@ -17,6 +17,7 @@ func Test_FromPNG(t *testing.T) {
 
 	//152*303px
 	generate.SetGap(10.0)
+	generate.SetDpi(96.0)
 	subj := generate.FromPNG(f)
 
 	// then
@@ -77,6 +78,7 @@ func Test_HorizontalFill(t *testing.T) {
 
 	//152*303px
 	generate.SetGap(10.0)
+	generate.SetDpi(96.0)
 	subj := generate.FromPNG(f)
 
 	t.Run("two shapes in the same row", func(t *testing.T) {
