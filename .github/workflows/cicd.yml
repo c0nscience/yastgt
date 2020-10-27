@@ -9,7 +9,7 @@ on:
 jobs:
 
   build:
-    name: Build
+    name: Build and Release
     runs-on: ubuntu-latest
     steps:
     - name: Get short SHA
@@ -37,7 +37,7 @@ jobs:
         cd cmd/stg
         GOOS=linux GOARCH=amd64 go build -v -o ../../out/stg-linux .
         GOOS=darwin GOARCH=amd64 go build -v -o ../../out/stg-mac .
-        GOOS=windows GOARCH=amd64 go build -v -o ../../out/stg-win .
+        GOOS=windows GOARCH=amd64 go build -v -o ../../out/stg-win.exe .
 
     - name: Test
       run: |
