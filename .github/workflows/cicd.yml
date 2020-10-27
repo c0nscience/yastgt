@@ -35,7 +35,9 @@ jobs:
       run: |
         mkdir out
         cd cmd/stg
-        go build -v -o ../../out .
+        GOOS=linux GOARCH=amd64 go build -v -o ../../out/stg-linux .
+        GOOS=darwin GOARCH=amd64 go build -v -o ../../out/stg-mac .
+        GOOS=windows GOARCH=amd64 go build -v -o ../../out/stg-win .
 
     - name: Test
       run: |
@@ -53,12 +55,32 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload Release Asset
+    - name: Upload Linux Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./out/stg
-        asset_name: stg
+        asset_path: ./out/stg-linux
+        asset_name: stg-linux
+        asset_content_type: application/octet-stream
+        
+    - name: Upload MacOS Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./out/stg-mac
+        asset_name: stg-mac
+        asset_content_type: application/octet-stream
+
+    - name: Upload Windows Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./out/stg-win
+        asset_name: stg-win
         asset_content_type: application/octet-stream
