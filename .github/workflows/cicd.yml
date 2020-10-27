@@ -26,7 +26,7 @@ jobs:
 
     - name: Build
       run: |
-        mkdir -f out
+        mkdir out
         go build -v -o out cmd/stg
 
     - name: Test
