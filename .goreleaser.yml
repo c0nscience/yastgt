@@ -3,7 +3,7 @@ project_name: stg
 release:
   prerelease: false
   draft: false
-  name_template: "STG v{{.Version}}"
+  name_template: "yastgt v{{.Version}}"
 
 before:
   hooks:
@@ -24,41 +24,41 @@ builds:
   - <<: *build_defaults
     id: linux
     goos: [linux]
-    goarch: [386, amd64, arm64]
+    goarch: [amd64]
 
   - <<: *build_defaults
     id: windows
     goos: [windows]
-    goarch: [386, amd64]
+    goarch: [amd64]
 
-#archives:
-#  - id: nix
-#    builds: [macos, linux]
-#    <<: &archive_defaults
-#      name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-#    wrap_in_directory: true
-#    replacements:
-#      darwin: macOS
-#    format: tar.gz
-#    files:
-#      - LICENSE
-#      - ./share/man/man1/gh*.1
-#  - id: windows
-#    builds: [windows]
-#    <<: *archive_defaults
-#    wrap_in_directory: false
-#    format: zip
-#    files:
-#      - LICENSE
-#
+archives:
+  - id: nix
+    builds: [macos, linux]
+    <<: &archive_defaults
+      name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    wrap_in_directory: true
+    replacements:
+      darwin: macOS
+    format: tar.gz
+    files:
+      - LICENSE
+      - ./share/man/man1/gh*.1
+  - id: windows
+    builds: [windows]
+    <<: *archive_defaults
+    wrap_in_directory: false
+    format: zip
+    files:
+      - LICENSE
+
 #nfpms:
 #  - license: MIT
 #    maintainer: GitHub
-#    homepage: https://github.com/cli/cli
+#    homepage: https://github.com/c0nscience/yastgt
 #    bindir: /usr
 #    dependencies:
 #      - git
-#    description: GitHub’s official command line tool.
+#    description: Simple SVG to gcode conversion CLI.
 #    formats:
 #      - deb
 #      - rpm

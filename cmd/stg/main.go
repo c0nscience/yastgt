@@ -9,19 +9,21 @@ import (
 
 	"github.com/c0nscience/yastgt/pkg/generate"
 	"github.com/c0nscience/yastgt/pkg/parse"
+	"github.com/c0nscience/yastgt/pkg/png"
 	"github.com/c0nscience/yastgt/pkg/reader"
 	"github.com/c0nscience/yastgt/pkg/transform"
 )
 
 const (
-	flagSvgFilePath = "svg"
-	flagOutFilePath = "out"
-	flagFillPNGFile = "fill"
-	flagCurveSpeed  = "curveSpeed"
-	flagLinearSpeed = "linearSpeed"
-	flagGap         = "gap"
-	flagThreshold   = "threshold"
-	flagDpi         = "dpi"
+	flagSvgFilePath  = "svg"
+	flagOutFilePath  = "out"
+	flagCurveSpeed   = "curveSpeed"
+	flagLinearSpeed  = "linearSpeed"
+	flagGap          = "gap"
+	flagThreshold    = "threshold"
+	flagDpi          = "dpi"
+	flagInkscapePath = "inkscape"
+	flagNoFill       = "no-fill"
 )
 
 func main() {
@@ -32,22 +34,24 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: flagSvgFilePath, Usage: "Path to the SVG file to generate GCode from.", Required: true},
 			&cli.StringFlag{Name: flagOutFilePath, Usage: "Path to the output GCode file.", Required: true},
-			&cli.StringFlag{Name: flagFillPNGFile, Usage: "PNG file containing the fill information."},
 			&cli.Float64Flag{Name: flagCurveSpeed, Value: 3000.0, Usage: "Divisor to normalize the speed of curves."},
 			&cli.Float64Flag{Name: flagLinearSpeed, Value: 4000.0, Usage: "Flat feed value for linear move commands."},
 			&cli.Float64Flag{Name: flagGap, Value: 10.0, Usage: "Gap between fill lines."},
 			&cli.Float64Flag{Name: flagThreshold, Value: 4.0, Usage: "Minimum line length for fill pattern."},
 			&cli.Float64Flag{Name: flagDpi, Value: 96.0, Usage: "DPI of the rasterized SVG image. Used to calculate the fill pattern."},
+			&cli.StringFlag{Name: flagInkscapePath, Value: "", Usage: "The path to a inkscape commandline binary version >= 1.x"},
+			&cli.BoolFlag{Name: flagNoFill, Value: false, Usage: "Set to disable filling the shapes with patterns."},
 		},
 		Action: func(c *cli.Context) error {
 			curveSpeed := c.Float64(flagCurveSpeed)
 			linearSpeed := c.Float64(flagLinearSpeed)
 			svgFilePath := c.String(flagSvgFilePath)
-			fillFilePath := c.String(flagFillPNGFile)
 			outFilePath := c.String(flagOutFilePath)
 			gap := c.Float64(flagGap)
 			threshold := c.Float64(flagThreshold)
 			dpi := c.Float64(flagDpi)
+			inkscapePath := c.String(flagInkscapePath)
+			noFill := c.Bool(flagNoFill)
 
 			b, err := ioutil.ReadFile(svgFilePath)
 			if err != nil {
@@ -57,11 +61,14 @@ func main() {
 
 			s := parse.SVG(x)
 
-			if len(fillFilePath) > 0 {
-				f, err := os.Open(fillFilePath)
+			if !noFill {
+				png.SetDpi(int(dpi))
+				png.SetInkscapePath(inkscapePath)
+				f, err := png.Export(svgFilePath)
 				if err != nil {
 					return err
 				}
+				defer os.Remove(f.Name())
 				generate.SetGap(gap)
 				generate.SetThreshold(threshold)
 				generate.SetDpi(dpi)
