@@ -18,7 +18,7 @@ jobs:
 
     - name: Get todays date
       id: today
-      run: echo "::set-output name=date::$(date -I)"
+      run: echo "::set-output name=date::$(date +"%Y-%m-%d-%T")"
       
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
