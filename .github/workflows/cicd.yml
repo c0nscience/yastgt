@@ -16,6 +16,10 @@ jobs:
       id: slug
       run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
 
+    - name: Get todays date
+      id: today
+      run: echo "::set-output name=date::$(date -I)"
+      
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
