@@ -12,6 +12,7 @@ import (
 var dpi = 96.0
 var gap = 10.0
 var threshold = 4.0
+var padding = 0.0
 
 func SetGap(f float64) {
 	gap = f
@@ -23,6 +24,10 @@ func SetThreshold(f float64) {
 
 func SetDpi(f float64) {
 	dpi = f
+}
+
+func SetPadding(f float64) {
+	padding = f
 }
 
 func FromPNG(f *os.File) []svg.Path {
@@ -86,8 +91,8 @@ func FromPNG(f *os.File) []svg.Path {
 
 	for _, v := range l {
 		for _, lb := range v {
-			from := pxToMM(lb.from)
-			to := pxToMM(lb.to)
+			from := pxToMM(lb.from) + padding
+			to := pxToMM(lb.to) - padding
 			if math.Abs(from-to) < threshold {
 				continue
 			}
