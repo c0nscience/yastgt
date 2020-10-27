@@ -27,7 +27,8 @@ jobs:
     - name: Build
       run: |
         mkdir out
-        go build -v -o out cmd/stg
+        cd cmd/stg
+        go build -v -o ../../out .
 
     - name: Test
       run: |
