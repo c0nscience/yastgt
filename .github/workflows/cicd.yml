@@ -12,11 +12,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    
-    - name: Get Git Version
-      uses: docker://gittools/gitversion:5.5.0-linux-alpine.3.10-x64-netcoreapp3.1
-      with:
-        args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_ShortSha > /github/workspace/version.txt\""
 
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
@@ -46,8 +41,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha }}
+        tag_name: ${{ GITHUB_SHA::8 }}
+        release_name: Release ${{ GITHUB_SHA::8 }}
         draft: false
         prerelease: false
 
