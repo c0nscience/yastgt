@@ -38,6 +38,10 @@ jobs:
         GOOS=linux GOARCH=amd64 go build -v -o ../../out/stg-linux .
         GOOS=darwin GOARCH=amd64 go build -v -o ../../out/stg-mac .
         GOOS=windows GOARCH=amd64 go build -v -o ../../out/stg-win.exe .
+        cd ../..
+        cd out
+        chmod +x stg-linux
+        chmod +x stg-mac
 
     - name: Test
       run: |
@@ -82,5 +86,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./out/stg-win.exe
-        asset_name: stg-win.exe
+        asset_name: 'stg-win.exe'
         asset_content_type: application/octet-stream
