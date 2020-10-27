@@ -12,6 +12,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
 
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
@@ -41,8 +44,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.sha[0:8] }}
-        release_name: Release ${{ github.sha[0:8] }}
+        tag_name: v${{ steps.today.outputs.date }}-${{ steps.slug.outputs.sha8 }}
+        release_name: Release v${{ steps.today.outputs.date }}-${{ steps.slug.outputs.sha8 }}
         draft: false
         prerelease: false
 
