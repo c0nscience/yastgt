@@ -26,8 +26,8 @@ jobs:
 
     - name: Build
       run: |
-        cd cmd/stg
-        go build -v .
+        mkdir -f out
+        go build -v -o out cmd/stg
 
     - name: Test
       run: |
@@ -35,6 +35,7 @@ jobs:
         go test -v ./...
         
     - name: Create Release
+      id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -43,3 +44,13 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./out/stg
+        asset_name: stg
+        asset_content_type: application/octet-stream
