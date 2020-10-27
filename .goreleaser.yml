@@ -3,7 +3,7 @@ project_name: stg
 release:
   prerelease: false
   draft: false
-  name_template: "STG {{.Version}}"
+  name_template: "STG v{{.Version}}"
 
 before:
   hooks:
