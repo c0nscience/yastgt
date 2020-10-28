@@ -1,12 +1,12 @@
 # TODO
 
-[ ] multiple fill patterns
-    [ ] horizontal (red)
-    [ ] vertical (green)
-    [ ] both (blue)
-[x] automatically rasterize svg to derive fill pattern
-[x] build and deploy binaries to github
-[ ] think about pen change
+[ ] multiple fill patterns 
+    [ ] horizontal (red)  
+    [ ] vertical (green)  
+    [ ] both (blue)  
+[x] automatically rasterize svg to derive fill pattern  
+[x] build and deploy binaries to github  
+[ ] think about pen change  
 
 # Yet another SVG to G-code tool
 
