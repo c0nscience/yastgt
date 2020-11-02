@@ -1,11 +1,11 @@
 # TODO
 
-- [ ] multiple fill patterns 
-   - [ ] horizontal (red)  
-   - [ ] vertical (green)  
-   - [ ] both (blue)  
-- [x] automatically rasterize svg to derive fill pattern  
+- [x] automatically rasterize svg to generate fill pattern  
 - [x] build and deploy binaries to github  
+- [ ] diagonal fill pattern
+- [ ] translate SVG origin to plotter origin (top left to bottom left)
+- [ ] handle deep group nesting
+- [ ] handle transform and matrix
 - [ ] think about pen change  
 
 # Yet another SVG to G-code tool

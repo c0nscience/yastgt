@@ -1,14 +1,15 @@
 package main
 
 import (
+	"image/color"
 	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/c0nscience/yastgt/pkg/generate"
 	"github.com/c0nscience/yastgt/pkg/parse"
+	"github.com/c0nscience/yastgt/pkg/pattern"
 	"github.com/c0nscience/yastgt/pkg/png"
 	"github.com/c0nscience/yastgt/pkg/reader"
 	"github.com/c0nscience/yastgt/pkg/transform"
@@ -24,7 +25,7 @@ const (
 	flagDpi          = "dpi"
 	flagInkscapePath = "inkscape"
 	flagNoFill       = "no-fill"
-	flagPadding      = "padding"
+	//flagPadding      = "padding"
 )
 
 func main() {
@@ -42,7 +43,6 @@ func main() {
 			&cli.Float64Flag{Name: flagDpi, Value: 96.0, Usage: "DPI of the rasterized SVG image. Used to calculate the fill pattern."},
 			&cli.StringFlag{Name: flagInkscapePath, Value: "", Usage: "The path to a inkscape commandline binary version >= 1.x"},
 			&cli.BoolFlag{Name: flagNoFill, Value: false, Usage: "Set to disable filling the shapes with patterns."},
-			&cli.Float64Flag{Name: flagPadding, Value: 0.0, Usage: "Set a padding in mm for fill pattern."},
 		},
 		Action: func(c *cli.Context) error {
 			curveSpeed := c.Float64(flagCurveSpeed)
@@ -54,7 +54,6 @@ func main() {
 			dpi := c.Float64(flagDpi)
 			inkscapePath := c.String(flagInkscapePath)
 			noFill := c.Bool(flagNoFill)
-			padding := c.Float64(flagPadding)
 
 			b, err := ioutil.ReadFile(svgFilePath)
 			if err != nil {
@@ -73,11 +72,12 @@ func main() {
 				}
 				defer os.Remove(f.Name())
 
-				generate.SetPadding(padding)
-				generate.SetGap(gap)
-				generate.SetThreshold(threshold)
-				generate.SetDpi(dpi)
-				fill := generate.FromPNG(f)
+				pattern.SetGap(gap)
+				pattern.SetDpi(dpi)
+				pattern.SetDegrees(45)
+				pattern.SetColor(color.NRGBA{R: 255, A: 255})
+				pattern.SetThreshold(threshold)
+				fill := pattern.Diagonal(f)
 				s.Path = append(s.Path, fill...)
 			}
 

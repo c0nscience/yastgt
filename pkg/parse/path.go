@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -9,7 +10,7 @@ import (
 	"github.com/c0nscience/yastgt/pkg/reader/xml"
 )
 
-var re = regexp.MustCompile(`[MLHVZCmlhvcz]\s{0,1}[\-0-9,\. e]*`)
+var re = regexp.MustCompile(`[MLHVCZQTAmlhvczqta]\s?[\-0-9,\. e]*`)
 
 func Path(p xml.Path) svg.Path {
 	d := p.D
@@ -59,6 +60,8 @@ func Path(p xml.Path) svg.Path {
 				}
 				res.Points = append(res.Points, cp)
 			}
+		default:
+			fmt.Printf("Could not match: %s\n", strings.Join(prts, " "))
 		}
 
 		d = d[len(m):]
