@@ -41,31 +41,16 @@ var bwd bool
 
 func Diagonal(img image.Image) []svg.Path {
 	bounds := img.Bounds()
-	lines := [][]*line{}
 	maxX = float64(bounds.Max.X)
 	maxY = float64(bounds.Max.Y)
 	bwd = false
-	dist := distance(gap, 90-degrees)
-	distPx := unit.MmToPX(dist, dpi)
-	lines = walk(
-		(bounds.Max.Y/distPx)*distPx,
-		func(t int) bool { return t >= bounds.Min.Y },
-		func(i int) vector { return vector{y: float64(i)} },
-		func(i int) int { return i - distPx },
-		lines,
-		img,
-	)
 
-	dist = distance(gap, degrees)
-	distPx = unit.MmToPX(dist, dpi)
-	lines = walk(
-		distPx,
-		func(t int) bool { return t < bounds.Max.X },
-		func(i int) vector { return vector{x: float64(i)} },
-		func(i int) int { return i + distPx },
-		lines,
-		img,
-	)
+	var lines [][]*line
+	if degrees <= 90 {
+		lines = clockwise(img, bounds)
+	} else {
+		lines = counterClockwise(img, bounds)
+	}
 
 	res := []svg.Path{}
 	pxToMM := unit.PxToMM(dpi)
@@ -84,7 +69,58 @@ func Diagonal(img image.Image) []svg.Path {
 	return res
 }
 
-func walk(min int, cond func(int) bool, v func(int) vector, incr func(int) int, lines [][]*line, img image.Image) [][]*line {
+func clockwise(img image.Image, bounds image.Rectangle) [][]*line {
+	dist := distance(gap, math.Abs(90-degrees))
+	distPx := unit.MmToPX(dist, dpi)
+
+	lines := walk(
+		(bounds.Max.Y/distPx)*distPx,
+		func(t int) bool { return t >= bounds.Min.Y },
+		func(i int) vector { return vector{y: float64(i)} },
+		func(i int) int { return i - distPx },
+		img,
+	)
+
+	dist = distance(gap, degrees)
+	distPx = unit.MmToPX(dist, dpi)
+	lines = append(lines, walk(
+		distPx,
+		func(t int) bool {
+			return t >= bounds.Min.X && t <= bounds.Max.X
+		},
+		func(i int) vector { return vector{x: float64(i)} },
+		func(i int) int { return i + distPx },
+		img,
+	)...)
+	return lines
+}
+
+func counterClockwise(img image.Image, bounds image.Rectangle) [][]*line {
+	dist := distance(gap, math.Abs(90-degrees))
+	distPx := unit.MmToPX(dist, dpi)
+
+	lines := walk(
+		(bounds.Max.Y/distPx)*distPx,
+		func(t int) bool { return t >= bounds.Min.Y },
+		func(i int) vector { return vector{x: float64(bounds.Max.X), y: float64(i)} },
+		func(i int) int { return i - distPx },
+		img,
+	)
+
+	dist = distance(gap, 180-degrees)
+	distPx = unit.MmToPX(dist, dpi)
+	lines = append(lines, walk(
+		bounds.Max.X-distPx,
+		func(t int) bool { return t >= bounds.Min.X && t <= bounds.Max.X },
+		func(i int) vector { return vector{x: float64(i)} },
+		func(i int) int { return i - distPx },
+		img,
+	)...)
+	return lines
+}
+
+func walk(min int, cond func(int) bool, v func(int) vector, incr func(int) int, img image.Image) [][]*line {
+	lines := [][]*line{}
 	for t := min; cond(t); t = incr(t) {
 		res := trace(v(t), img)
 		if len(res) > 0 {
@@ -106,7 +142,7 @@ func walk(min int, cond func(int) bool, v func(int) vector, incr func(int) int, 
 func trace(start vector, img image.Image) []*line {
 	curr := []*line{}
 	dir := fromAngle(degrees)
-	for p := start; p.x < maxX && p.y < maxY; p = p.plus(dir) {
+	for p := start; p.x >= float64(img.Bounds().Min.X) && p.y >= float64(img.Bounds().Min.Y) && p.x <= maxX && p.y <= maxY; p = p.plus(dir) {
 		c := img.At(px(p.x), px(p.y))
 		if clr == c {
 			if len(curr) == 0 {

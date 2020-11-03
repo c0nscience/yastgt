@@ -161,6 +161,114 @@ func Test_Fill(t *testing.T) {
 		assert.InDelta(t, 117, x(4, 1), delta)
 		assert.InDelta(t, 90.83, y(4, 1), delta)
 	})
+
+	t.Run("should draw 90 degree pattern with 10 mm distance", func(t *testing.T) {
+		f, _ := os.Open("../../resource/diag-fill.png")
+		pattern.SetGap(10)
+		pattern.SetDpi(96)
+		pattern.SetDegrees(90)
+		pattern.SetColor(color.NRGBA{R: 255, A: 255})
+		pattern.SetThreshold(0)
+		img, _ := gpng.Decode(f)
+
+		// when
+		subj := pattern.Diagonal(img)
+		x := xExtractor(subj)
+		y := yExtractor(subj)
+		moveTo := moveToExtractor(subj)
+
+		assert.InDelta(t, 50.27, x(0, 0), delta)
+		assert.InDelta(t, 89.92, y(0, 0), delta)
+		assert.True(t, moveTo(0, 0))
+		assert.InDelta(t, 50.27, x(0, 1), delta)
+		assert.InDelta(t, 103.35, y(0, 1), delta)
+
+	})
+
+	t.Run("should draw 0 degree pattern with 10 mm distance", func(t *testing.T) {
+		f, _ := os.Open("../../resource/diag-fill-multiple-shapes-bigger.png")
+		pattern.SetGap(10)
+		pattern.SetDpi(96)
+		pattern.SetDegrees(0)
+		pattern.SetColor(color.NRGBA{R: 255, A: 255})
+		pattern.SetThreshold(0)
+		img, _ := gpng.Decode(f)
+
+		// when
+		subj := pattern.Diagonal(img)
+		x := xExtractor(subj)
+		y := yExtractor(subj)
+		moveTo := moveToExtractor(subj)
+
+		assert.InDelta(t, 284.8, x(9, 0), delta)
+		assert.InDelta(t, 251.2, y(9, 0), delta)
+		assert.True(t, moveTo(9, 0))
+		assert.InDelta(t, 105.5, x(9, 1), delta)
+		assert.InDelta(t, 251.2, y(9, 1), delta)
+
+	})
+
+	t.Run("should draw 120 degree pattern with 10 mm distance", func(t *testing.T) {
+		f, _ := os.Open("../../resource/diag-fill-multiple-shapes-bigger.png")
+		pattern.SetGap(20)
+		pattern.SetDpi(96)
+		pattern.SetDegrees(120)
+		pattern.SetColor(color.NRGBA{R: 255, A: 255})
+		pattern.SetThreshold(0)
+		img, _ := gpng.Decode(f)
+
+		// when
+		subj := pattern.Diagonal(img)
+		x := xExtractor(subj)
+		y := yExtractor(subj)
+		moveTo := moveToExtractor(subj)
+
+		assert.Len(t, subj, 33)
+
+		assert.InDelta(t, 335, x(0, 0), delta)
+		assert.InDelta(t, 185, y(0, 0), delta)
+		assert.True(t, moveTo(0, 0))
+		assert.InDelta(t, 313.5, x(0, 1), delta)
+		assert.InDelta(t, 223, y(0, 1), delta)
+
+		assert.InDelta(t, 153, x(6, 0), delta)
+		assert.InDelta(t, 301, y(6, 0), delta)
+		assert.True(t, moveTo(6, 0))
+		assert.InDelta(t, 201, x(6, 1), delta)
+		assert.InDelta(t, 218, y(6, 1), delta)
+
+	})
+
+	t.Run("should draw 150 degree pattern with 10 mm distance", func(t *testing.T) {
+		f, _ := os.Open("../../resource/diag-fill-multiple-shapes-bigger.png")
+		pattern.SetGap(20)
+		pattern.SetDpi(96)
+		pattern.SetDegrees(150)
+		pattern.SetColor(color.NRGBA{R: 255, A: 255})
+		pattern.SetThreshold(0)
+		img, _ := gpng.Decode(f)
+
+		// when
+		subj := pattern.Diagonal(img)
+		x := xExtractor(subj)
+		y := yExtractor(subj)
+		moveTo := moveToExtractor(subj)
+
+		assert.Len(t, subj, 33)
+
+		assert.InDelta(t, 137, x(3, 0), delta)
+		assert.InDelta(t, 284, y(3, 0), delta)
+		assert.True(t, moveTo(3, 0))
+		assert.InDelta(t, 325.5, x(3, 1), delta)
+		assert.InDelta(t, 175.7, y(3, 1), delta)
+
+		assert.InDelta(t, 105, x(17, 0), delta)
+		assert.InDelta(t, 187, y(17, 0), delta)
+		assert.True(t, moveTo(17, 0))
+		assert.InDelta(t, 67, x(17, 1), delta)
+		assert.InDelta(t, 209.5, y(17, 1), delta)
+
+	})
 }
 
 func xExtractor(p []svg.Path) func(int, int) float64 {
