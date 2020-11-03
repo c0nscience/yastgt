@@ -47,9 +47,9 @@ func Diagonal(f *os.File) []svg.Path {
 	lines := [][]*line{}
 	maxX = float64(bounds.Max.X)
 	maxY = float64(bounds.Max.Y)
-	dist := distance(gap)
-	distPx := unit.MmToPX(dist, dpi)
 	bwd = false
+	dist := distance(gap, 90-degrees)
+	distPx := unit.MmToPX(dist, dpi)
 	lines = walk(
 		(bounds.Max.Y/distPx)*distPx,
 		func(t int) bool { return t >= bounds.Min.Y },
@@ -59,6 +59,8 @@ func Diagonal(f *os.File) []svg.Path {
 		img,
 	)
 
+	dist = distance(gap, degrees)
+	distPx = unit.MmToPX(dist, dpi)
 	lines = walk(
 		distPx,
 		func(t int) bool { return t < bounds.Max.X },
@@ -149,8 +151,8 @@ func trace(start vector, img image.Image) []*line {
 	return curr
 }
 
-func distance(d float64) float64 {
-	return d / math.Sin(unit.DegToRad(degrees))
+func distance(dist, deg float64) float64 {
+	return dist / math.Sin(unit.DegToRad(deg))
 }
 
 func px(f float64) int {

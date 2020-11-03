@@ -129,6 +129,34 @@ func Test_Fill(t *testing.T) {
 		assert.InDelta(t, 169.08, y(5, 1), delta)
 
 	})
+
+	t.Run("should draw 30 degree pattern with 10 mm distance", func(t *testing.T) {
+		// given
+		f, _ := os.Open("../../resource/diag-fill.png")
+		pattern.SetGap(10)
+		pattern.SetDpi(96)
+		pattern.SetDegrees(30)
+		pattern.SetColor(color.NRGBA{R: 255, A: 255})
+		pattern.SetThreshold(0)
+
+		// when
+		subj := pattern.Diagonal(f)
+		x := xExtractor(subj)
+		y := yExtractor(subj)
+		moveTo := moveToExtractor(subj)
+
+		assert.InDelta(t, 44.9, x(0, 0), delta)
+		assert.InDelta(t, 95.42, y(0, 0), delta)
+		assert.True(t, moveTo(0, 0))
+		assert.InDelta(t, 68, x(0, 1), delta)
+		assert.InDelta(t, 109, y(0, 1), delta)
+
+		assert.InDelta(t, 74.18, x(4, 0), delta)
+		assert.InDelta(t, 66.04, y(4, 0), delta)
+		assert.True(t, moveTo(4, 0))
+		assert.InDelta(t, 117, x(4, 1), delta)
+		assert.InDelta(t, 90.83, y(4, 1), delta)
+	})
 }
 
 func xExtractor(p []svg.Path) func(int, int) float64 {
