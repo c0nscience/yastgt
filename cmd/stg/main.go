@@ -1,10 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
+	gpng "image/png"
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 
 	"github.com/urfave/cli/v2"
 
@@ -25,7 +29,7 @@ const (
 	flagDpi          = "dpi"
 	flagInkscapePath = "inkscape"
 	flagNoFill       = "no-fill"
-	flagDirection    = "direction"
+	flagFills        = "fills"
 	//flagPadding      = "padding"
 )
 
@@ -42,9 +46,9 @@ func main() {
 			&cli.Float64Flag{Name: flagGap, Value: 10.0, Usage: "Gap between fill lines."},
 			&cli.Float64Flag{Name: flagThreshold, Value: 4.0, Usage: "Minimum line length for fill pattern."},
 			&cli.Float64Flag{Name: flagDpi, Value: 96.0, Usage: "DPI of the rasterized SVG image. Used to calculate the fill pattern."},
-			&cli.Float64Flag{Name: flagDirection, Value: 45.0, Usage: "Set the direction in degrees of the fill pattern"},
 			&cli.StringFlag{Name: flagInkscapePath, Value: "", Usage: "The path to a inkscape commandline binary version >= 1.x"},
 			&cli.BoolFlag{Name: flagNoFill, Value: false, Usage: "Set to disable filling the shapes with patterns."},
+			&cli.StringSliceFlag{Name: flagFills, Value: cli.NewStringSlice("45,255,0,0"), Usage: "Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255."},
 		},
 		Action: func(c *cli.Context) error {
 			curveSpeed := c.Float64(flagCurveSpeed)
@@ -56,7 +60,7 @@ func main() {
 			dpi := c.Float64(flagDpi)
 			inkscapePath := c.String(flagInkscapePath)
 			noFill := c.Bool(flagNoFill)
-			direction := c.Float64(flagDirection)
+			fills := c.StringSlice(flagFills)
 
 			b, err := ioutil.ReadFile(svgFilePath)
 			if err != nil {
@@ -75,14 +79,25 @@ func main() {
 				}
 				defer os.Remove(f.Name())
 
+				img, err := gpng.Decode(f)
+				if err != nil {
+					fmt.Printf("Coud not decode image. Error: %s", err.Error())
+				}
+
 				pattern.SetGap(gap)
 				pattern.SetDpi(dpi)
-				pattern.SetDegrees(45)
-				pattern.SetColor(color.NRGBA{R: 255, A: 255})
 				pattern.SetThreshold(threshold)
-				pattern.SetDegrees(direction)
-				fill := pattern.Diagonal(f)
-				s.Path = append(s.Path, fill...)
+				for _, str := range fills {
+					prts := strings.Split(str, ",")
+					degrees, _ := strconv.ParseFloat(prts[0], 64)
+					r, _ := strconv.ParseInt(prts[1], 10, 64)
+					g, _ := strconv.ParseInt(prts[2], 10, 64)
+					b, _ := strconv.ParseInt(prts[3], 10, 64)
+
+					pattern.SetColor(color.NRGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: 255})
+					pattern.SetDegrees(degrees)
+					s.Path = append(s.Path, pattern.Diagonal(img)...)
+				}
 			}
 
 			transform.SetG0Speed(linearSpeed)

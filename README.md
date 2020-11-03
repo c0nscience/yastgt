@@ -43,6 +43,6 @@ GLOBAL OPTIONS:
    --dpi value          DPI of the rasterized SVG image. Used to calculate the fill pattern. (default: 96)
    --inkscape value     The path to a inkscape commandline binary version >= 1.x
    --no-fill            Set to disable filling the shapes with patterns. (default: false)
-   --padding value      Set a padding in mm for fill pattern. (default: 0)
+   --fills value        Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255. (default: "45,255,0,0")
    --help, -h           show help (default: false)
 ```

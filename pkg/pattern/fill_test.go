@@ -2,6 +2,7 @@ package pattern_test
 
 import (
 	"image/color"
+	gpng "image/png"
 	"os"
 	"testing"
 
@@ -22,9 +23,10 @@ func Test_Fill(t *testing.T) {
 		pattern.SetDegrees(45)
 		pattern.SetColor(color.NRGBA{R: 255, A: 255})
 		pattern.SetThreshold(0)
+		img, _ := gpng.Decode(f)
 
 		// when
-		subj := pattern.Diagonal(f)
+		subj := pattern.Diagonal(img)
 		x := xExtractor(subj)
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
@@ -97,9 +99,10 @@ func Test_Fill(t *testing.T) {
 		pattern.SetDegrees(45)
 		pattern.SetColor(color.NRGBA{R: 255, A: 255})
 		pattern.SetThreshold(0)
+		img, _ := gpng.Decode(f)
 
 		// when
-		subj := pattern.Diagonal(f)
+		subj := pattern.Diagonal(img)
 		x := xExtractor(subj)
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
@@ -138,9 +141,10 @@ func Test_Fill(t *testing.T) {
 		pattern.SetDegrees(30)
 		pattern.SetColor(color.NRGBA{R: 255, A: 255})
 		pattern.SetThreshold(0)
+		img, _ := gpng.Decode(f)
 
 		// when
-		subj := pattern.Diagonal(f)
+		subj := pattern.Diagonal(img)
 		x := xExtractor(subj)
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)

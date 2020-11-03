@@ -3,9 +3,7 @@ package pattern
 import (
 	"image"
 	"image/color"
-	"image/png"
 	"math"
-	"os"
 
 	"github.com/c0nscience/yastgt/pkg/parse/svg"
 	"github.com/c0nscience/yastgt/pkg/unit"
@@ -41,8 +39,7 @@ var maxX float64
 var maxY float64
 var bwd bool
 
-func Diagonal(f *os.File) []svg.Path {
-	img, _ := png.Decode(f)
+func Diagonal(img image.Image) []svg.Path {
 	bounds := img.Bounds()
 	lines := [][]*line{}
 	maxX = float64(bounds.Max.X)
