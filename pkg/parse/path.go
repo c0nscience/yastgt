@@ -18,18 +18,25 @@ func Path(p xml.Path) svg.Path {
 		Points: []svg.PointI{},
 	}
 
+	var initSubPathPt svg.Point
+	wasClosed := false
 	for len(d) > 0 {
 		m := re.FindString(d)
 		prts := strings.Split(strings.Trim(m, " "), " ")
-		cp := cp(res.Points)
+		currPt := cp(res.Points)
+		if wasClosed {
+			initSubPathPt = currPt
+			wasClosed = false
+		}
 		switch prts[0] {
 		case "M":
 			for i, prt := range prts[1:] {
+				p := Point(prt)
 				if i == 0 {
-					res.Points = append(res.Points, MoveTo(prt))
-				} else {
-					res.Points = append(res.Points, Point(prt))
+					p = MoveTo(prt)
+					initSubPathPt = p
 				}
+				res.Points = append(res.Points, p)
 			}
 		case "L":
 			for _, prt := range prts[1:] {
@@ -38,18 +45,20 @@ func Path(p xml.Path) svg.Path {
 		case "H":
 			for _, prt := range prts[1:] {
 				x, _ := strconv.ParseFloat(prt, 64)
-				res.Points = append(res.Points, svg.Point{X: x, Y: cp.Y})
+				res.Points = append(res.Points, svg.Point{X: x, Y: currPt.Y})
 			}
 		case "V":
 			for _, prt := range prts[1:] {
 				y, _ := strconv.ParseFloat(prt, 64)
-				res.Points = append(res.Points, svg.Point{X: cp.X, Y: y})
+				res.Points = append(res.Points, svg.Point{X: currPt.X, Y: y})
 			}
-		//case "Z":
-		//	fp := res.Points[0].CurrPt()
-		//	fp.MoveTo = false
-		//	fp.Rel = false
-		//	res.Points = append(res.Points, fp)
+		case "Z":
+			p := initSubPathPt.CurrPt()
+			p.MoveTo = false
+			p.Rel = false
+			currPt = p
+			res.Points = append(res.Points, p)
+			wasClosed = true
 		case "C":
 			rst := prts[1:]
 			for i := 0; i < (len(rst) / 3); i++ {

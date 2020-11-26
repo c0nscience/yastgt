@@ -10,7 +10,7 @@ import (
 )
 
 func Test_Path(t *testing.T) {
-	d := "M 1.5420259,10.163793 L 14,20 25,12 M 10.4375,31.906968 H 6 V 18 Z C 10,12 30,60 22,50 m -2,0 l -5,-1 h 5 v 7 c 0,0 5,-2 4,2"
+	d := "M 1.5420259,10.163793 L 14,20 25,12 M 10.4375,31.906968 H 6 V 18 Z C 10,12 30,60 22,50 Z m -2,0 l -5,-1 h 5 v 7 c 0,0 5,-2 4,2"
 	x := xml.Path{
 		D: d,
 	}
@@ -25,12 +25,13 @@ func Test_Path(t *testing.T) {
 			svg.Point{X: 10.4375, Y: 31.906968, MoveTo: true},   // moveto
 			svg.Point{X: 6, Y: 31.906968},                       // horizontal lineto
 			svg.Point{X: 6, Y: 18},                              // vertical lineto
-			//svg.Point{X: 1.5420259, Y: 10.163793},               // close path
+			svg.Point{X: 10.4375, Y: 31.906968},                 // close path
 			svg.CubicPoint{ // bezier curve
 				CP: svg.Point{X: 22, Y: 50},
 				P1: svg.Point{X: 10, Y: 12},
 				P2: svg.Point{X: 30, Y: 60},
 			},
+			svg.Point{X: 10.4375, Y: 31.906968}, // close path TODO this is not the correct point
 		}, subj.Points)
 
 	})

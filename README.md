@@ -4,10 +4,11 @@
 - [x] build and deploy binaries to github  
 - [x] diagonal fill pattern
 - [x] handle patterns with a radius greater than 90 degrees
-- [ ] handle closepath command
+- [x] handle closepath command
 - [ ] translate SVG origin to plotter origin (top left to bottom left)
 - [ ] handle deep group nesting
 - [ ] handle transform and matrix
+- [ ] add line, rectangle, ellipse, circle support
 - [ ] save latest options into file, by svg name for future use
    - [ ] alter options via cmd line if needed (kind of templating)
       - cmd line param > file param
