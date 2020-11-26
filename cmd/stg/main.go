@@ -29,7 +29,7 @@ const (
 	flagDpi          = "dpi"
 	flagInkscapePath = "inkscape"
 	flagNoFill       = "no-fill"
-	flagFills        = "fills"
+	flagFill         = "fill"
 	//flagPadding      = "padding"
 )
 
@@ -48,7 +48,7 @@ func main() {
 			&cli.Float64Flag{Name: flagDpi, Value: 96.0, Usage: "DPI of the rasterized SVG image. Used to calculate the fill pattern."},
 			&cli.StringFlag{Name: flagInkscapePath, Value: "", Usage: "The path to a inkscape commandline binary version >= 1.x"},
 			&cli.BoolFlag{Name: flagNoFill, Value: false, Usage: "Set to disable filling the shapes with patterns."},
-			&cli.StringSliceFlag{Name: flagFills, Value: cli.NewStringSlice("45,255,0,0"), Usage: "Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255."},
+			&cli.StringSliceFlag{Name: flagFill, Value: cli.NewStringSlice("45,255,0,0"), Usage: "Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255."},
 		},
 		Action: func(c *cli.Context) error {
 			curveSpeed := c.Float64(flagCurveSpeed)
@@ -60,7 +60,7 @@ func main() {
 			dpi := c.Float64(flagDpi)
 			inkscapePath := c.String(flagInkscapePath)
 			noFill := c.Bool(flagNoFill)
-			fills := c.StringSlice(flagFills)
+			fills := c.StringSlice(flagFill)
 
 			b, err := ioutil.ReadFile(svgFilePath)
 			if err != nil {

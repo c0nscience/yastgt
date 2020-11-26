@@ -6,8 +6,8 @@ import (
 	"github.com/c0nscience/yastgt/pkg/transform/gcode"
 )
 
-var penUp = gcode.Servo("150")
-var penDwn = gcode.Servo("30")
+var penUp = gcode.Servo("130")
+var penDwn = gcode.Servo("90")
 var g0Speed float64 = 2000
 var g5Speed float64 = 100
 

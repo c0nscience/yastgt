@@ -8,6 +8,9 @@
 - [ ] translate SVG origin to plotter origin (top left to bottom left)
 - [ ] handle deep group nesting
 - [ ] handle transform and matrix
+- [ ] save latest options into file, by svg name for future use
+   - [ ] alter options via cmd line if needed (kind of templating)
+      - cmd line param > file param
 - [ ] think about pen change  
 
 # Yet another SVG to G-code tool
@@ -45,6 +48,6 @@ GLOBAL OPTIONS:
    --dpi value          DPI of the rasterized SVG image. Used to calculate the fill pattern. (default: 96)
    --inkscape value     The path to a inkscape commandline binary version >= 1.x
    --no-fill            Set to disable filling the shapes with patterns. (default: false)
-   --fills value        Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255. (default: "45,255,0,0")
+   --fill value         Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255. (default: "45,255,0,0")
    --help, -h           show help (default: false)
-```
+   ```
