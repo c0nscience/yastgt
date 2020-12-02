@@ -1,9 +1,10 @@
 package xml
 
 type SVG struct {
-	Path []Path `xml:"path"`
-	Rect []Rect `xml:"rect"`
-	G    []G    `xml:"g"`
+	Height string `xml:"height,attr"`
+	Path   []Path `xml:"path"`
+	Rect   []Rect `xml:"rect"`
+	G      []G    `xml:"g"`
 }
 
 type G struct {

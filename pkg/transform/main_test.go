@@ -12,6 +12,7 @@ import (
 func Test_Transform(t *testing.T) {
 	// given
 	s := svg.SVG{
+		Height: 20,
 		Path: []svg.Path{
 			{
 				Points: []svg.PointI{
@@ -40,6 +41,7 @@ func Test_Transform(t *testing.T) {
 			},
 		},
 	}
+
 	exp := []gcode.Cmd{
 		gcode.Cmd("G21"),
 		gcode.Cmd("G90"),
@@ -54,19 +56,19 @@ func Test_Transform(t *testing.T) {
 		gcode.Cmd("M906 X800"),
 		gcode.Cmd("M906 Y800"),
 		gcode.Cmd("M906 I1 Y800"),
-		gcode.Cmd("G0 F2000.00 X0.0 Y0.0"),
-		gcode.Cmd("G0 F2000.00 X10.0 Y0.0"),
+		gcode.Cmd("G0 F2000.00 X0.0 Y20.0"),
+		gcode.Cmd("G0 F2000.00 X10.0 Y20.0"),
 		gcode.Cmd("G0 F2000.00 X10.0 Y10.0"),
 		gcode.Cmd("G0 F2000.00 X0.0 Y10.0"),
-		gcode.Cmd("G0 F2000.00 X0.0 Y0.0"),
+		gcode.Cmd("G0 F2000.00 X0.0 Y20.0"),
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S130"),
 		gcode.Cmd("M400"),
-		gcode.Cmd("G0 F2000.00 X2.0 Y2.0"),
+		gcode.Cmd("G0 F2000.00 X2.0 Y18.0"),
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S90"),
 		gcode.Cmd("M400"),
-		gcode.Cmd("G5 F38.82 I-1.0 J2.0 P1.0 Q-2.0 X2.0 Y2.0"),
+		gcode.Cmd("G5 F38.82 I-1.0 J-2.0 P1.0 Q2.0 X2.0 Y18.0"),
 
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S130"),
@@ -75,11 +77,11 @@ func Test_Transform(t *testing.T) {
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S90"),
 		gcode.Cmd("M400"),
-		gcode.Cmd("G0 F2000.00 X5.0 Y2.0"),
-		gcode.Cmd("G0 F2000.00 X7.0 Y8.0"),
-		gcode.Cmd("G0 F2000.00 X2.0 Y2.0"),
+		gcode.Cmd("G0 F2000.00 X5.0 Y18.0"),
+		gcode.Cmd("G0 F2000.00 X7.0 Y12.0"),
+		gcode.Cmd("G0 F2000.00 X2.0 Y18.0"),
 		gcode.Cmd("G0 F2000.00 X14.0 Y10.0"),
-		gcode.Cmd("G0 F2000.00 X42.0 Y21.0"),
+		gcode.Cmd("G0 F2000.00 X42.0 Y-1.0"),
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S130"),
 		gcode.Cmd("M400"),

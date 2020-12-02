@@ -5,7 +5,7 @@ import "fmt"
 type PointI interface {
 	fmt.Stringer
 	CurrPt() Point
-	Relative() bool
+	ToPlotterCoord(h float64) PointI
 }
 
 var _ PointI = Point{}
@@ -17,16 +17,17 @@ type Point struct {
 	Idx    int
 }
 
+func (me Point) ToPlotterCoord(h float64) PointI {
+	me.Y = h - me.Y
+	return me
+}
+
 func (me Point) String() string {
 	return fmt.Sprintf("(%.2f,%.2f)", me.X, me.Y)
 }
 
 func (me Point) CurrPt() Point {
 	return me
-}
-
-func (me Point) Relative() bool {
-	return me.Rel
 }
 
 func (me Point) RelativeTo(p Point) Point {
@@ -53,6 +54,9 @@ func (me CubicPoint) CurrPt() Point {
 	return me.CP
 }
 
-func (me CubicPoint) Relative() bool {
-	return me.Rel
+func (me CubicPoint) ToPlotterCoord(h float64) PointI {
+	me.CP.Y = h - me.CP.Y
+	me.P1.Y = h - me.P1.Y
+	me.P2.Y = h - me.P2.Y
+	return me
 }

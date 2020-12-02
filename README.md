@@ -5,7 +5,7 @@
 - [x] diagonal fill pattern
 - [x] handle patterns with a radius greater than 90 degrees
 - [x] handle closepath command
-- [ ] translate SVG origin to plotter origin (top left to bottom left)
+- [x] translate SVG origin to plotter origin (top left to bottom left)
 - [ ] handle deep group nesting
 - [ ] handle transform and matrix
 - [ ] add line, rectangle, ellipse, circle support

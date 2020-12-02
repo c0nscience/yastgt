@@ -1,4 +1,4 @@
-package png_test
+package fillpng_test
 
 import (
 	"io/ioutil"
@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/c0nscience/yastgt/pkg/png"
+	"github.com/c0nscience/yastgt/pkg/fillpng"
 )
 
 func Test_Export(t *testing.T) {
@@ -15,8 +15,8 @@ func Test_Export(t *testing.T) {
 	t.Run("should export svg as png", func(t *testing.T) {
 		svgFile := "../../resource/fill-test.svg"
 
-		png.SetDpi(96)
-		f, err := png.Export(svgFile)
+		fillpng.SetDpi(96)
+		f, err := fillpng.Export(svgFile)
 		assert.NoError(t, err)
 		defer os.Remove(f.Name())
 

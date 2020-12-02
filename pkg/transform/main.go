@@ -22,7 +22,7 @@ func SetG5Speed(i float64) {
 func Gcode(svg svg.SVG) []gcode.Cmd {
 	res := append([]gcode.Cmd{}, head()...)
 
-	res = append(res, fromPath(svg.Path)...)
+	res = append(res, fromPath(svg.Path, svg.Height)...)
 
 	res = append(res, penUp...)
 
@@ -40,11 +40,12 @@ func head() []gcode.Cmd {
 	return res
 }
 
-func fromPath(pths []svg.Path) []gcode.Cmd {
+func fromPath(pths []svg.Path, h float64) []gcode.Cmd {
 	res := []gcode.Cmd{}
 	var cp svg.PointI
 	for _, pth := range pths {
 		for _, p := range pth.Points {
+			p = p.ToPlotterCoord(h)
 			switch pt := p.(type) {
 			case svg.Point:
 				if pt.MoveTo {

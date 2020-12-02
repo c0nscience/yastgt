@@ -1,13 +1,17 @@
 package parse
 
 import (
+	"strconv"
+
 	"github.com/c0nscience/yastgt/pkg/parse/svg"
 	"github.com/c0nscience/yastgt/pkg/reader/xml"
 )
 
 func SVG(xml xml.SVG) svg.SVG {
+	h, _ := strconv.ParseFloat(xml.Height[:len(xml.Height)-2], 64)
 	res := svg.SVG{
-		Path: fromPath(xml.Path),
+		Height: h,
+		Path:   fromPath(xml.Path),
 	}
 
 	for _, g := range xml.G {

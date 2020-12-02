@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"image/color"
-	gpng "image/png"
+	"image/png"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,9 +12,9 @@ import (
 
 	"github.com/urfave/cli/v2"
 
+	"github.com/c0nscience/yastgt/pkg/fillpng"
 	"github.com/c0nscience/yastgt/pkg/parse"
 	"github.com/c0nscience/yastgt/pkg/pattern"
-	"github.com/c0nscience/yastgt/pkg/png"
 	"github.com/c0nscience/yastgt/pkg/reader"
 	"github.com/c0nscience/yastgt/pkg/transform"
 )
@@ -28,7 +28,6 @@ const (
 	flagThreshold    = "threshold"
 	flagDpi          = "dpi"
 	flagInkscapePath = "inkscape"
-	flagNoFill       = "no-fill"
 	flagFill         = "fill"
 	//flagPadding      = "padding"
 )
@@ -47,8 +46,7 @@ func main() {
 			&cli.Float64Flag{Name: flagThreshold, Value: 4.0, Usage: "Minimum line length for fill pattern."},
 			&cli.Float64Flag{Name: flagDpi, Value: 96.0, Usage: "DPI of the rasterized SVG image. Used to calculate the fill pattern."},
 			&cli.StringFlag{Name: flagInkscapePath, Value: "", Usage: "The path to a inkscape commandline binary version >= 1.x"},
-			&cli.BoolFlag{Name: flagNoFill, Value: false, Usage: "Set to disable filling the shapes with patterns."},
-			&cli.StringSliceFlag{Name: flagFill, Value: cli.NewStringSlice("45,255,0,0"), Usage: "Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255."},
+			&cli.StringSliceFlag{Name: flagFill, Value: nil, Usage: "Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255."},
 		},
 		Action: func(c *cli.Context) error {
 			curveSpeed := c.Float64(flagCurveSpeed)
@@ -59,27 +57,26 @@ func main() {
 			threshold := c.Float64(flagThreshold)
 			dpi := c.Float64(flagDpi)
 			inkscapePath := c.String(flagInkscapePath)
-			noFill := c.Bool(flagNoFill)
 			fills := c.StringSlice(flagFill)
 
 			b, err := ioutil.ReadFile(svgFilePath)
 			if err != nil {
 				return err
 			}
-			x, _ := reader.Unmarshal(b)
+			x, _ := reader.Unmarshal(b) //svg.Read
 
-			s := parse.SVG(x)
+			s := parse.SVG(x) //svg.Parse
 
-			if !noFill {
-				png.SetDpi(int(dpi))
-				png.SetInkscapePath(inkscapePath)
-				f, err := png.Export(svgFilePath)
+			if fills != nil {
+				fillpng.SetDpi(int(dpi))
+				fillpng.SetInkscapePath(inkscapePath)
+				f, err := fillpng.Export(svgFilePath)
 				if err != nil {
 					return err
 				}
 				defer os.Remove(f.Name())
 
-				img, err := gpng.Decode(f)
+				img, err := png.Decode(f)
 				if err != nil {
 					fmt.Printf("Coud not decode image. Error: %s", err.Error())
 				}

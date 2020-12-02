@@ -11,7 +11,6 @@ type Cmd string
 const (
 	G21  Cmd = "G21"
 	G90  Cmd = "G90"
-	G91  Cmd = "G91"
 	G17  Cmd = "G17"
 	M400 Cmd = "M400"
 	M18  Cmd = "M18"
@@ -29,10 +28,6 @@ func G0(p svg.Point, i float64) Cmd {
 	x := floatToString(p.X)
 	y := floatToString(p.Y)
 	return Cmd(fmt.Sprintf("G0 F%.2f X%s Y%s", i, x, y))
-}
-
-func G0F(f int) Cmd {
-	return Cmd(fmt.Sprintf("G0 F%d", f))
 }
 
 func Servo(s string) []Cmd {

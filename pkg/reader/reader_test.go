@@ -89,4 +89,10 @@ func Test_Unmarshal(t *testing.T) {
 		assert.Equal(t, xml.Rect{X: 41.577377, Y: 105.83333, Height: 91.470238, Width: 133.80357}, r)
 	})
 
+	t.Run("height from root element", func(t *testing.T) {
+		r := subj.Height
+
+		assert.Equal(t, "35cm", r)
+	})
+
 }

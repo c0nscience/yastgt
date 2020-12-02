@@ -1,5 +1,6 @@
 package svg
 
 type SVG struct {
-	Path []Path
+	Height float64
+	Path   []Path
 }
