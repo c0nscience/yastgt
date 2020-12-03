@@ -6,7 +6,7 @@
 - [x] handle patterns with a radius greater than 90 degrees
 - [x] handle closepath command
 - [x] translate SVG origin to plotter origin (top left to bottom left)
-- [ ] handle deep group nesting
+- [x] handle deep group nesting
 - [ ] handle transform and matrix
 - [ ] add line, rectangle, ellipse, circle support
 - [ ] save latest options into file, by svg name for future use

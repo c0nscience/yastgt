@@ -10,6 +10,7 @@ type SVG struct {
 type G struct {
 	Rect []Rect `xml:"rect"`
 	Path []Path `xml:"path"`
+	G    []G    `xml:"g"`
 }
 
 type Path struct {

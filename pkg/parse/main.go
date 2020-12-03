@@ -14,8 +14,20 @@ func SVG(xml xml.SVG) svg.SVG {
 		Path:   fromPath(xml.Path),
 	}
 
-	for _, g := range xml.G {
-		res.Path = append(res.Path, fromPath(g.Path)...)
+	res.Path = append(res.Path, fromGroup(xml.G)...)
+
+	return res
+}
+
+func fromGroup(grps []xml.G) []svg.Path {
+	res := []svg.Path{}
+
+	for _, g := range grps {
+		res = append(res, fromGroup(g.G)...)
+	}
+
+	for _, g := range grps {
+		res = append(res, fromPath(g.Path)...)
 	}
 
 	return res

@@ -43,6 +43,24 @@ func Test_Unmarshal(t *testing.T) {
 				width="133.80357"
 				id="rect4550"
 				style="fill:none;stroke:#000000;stroke-width:0.3" />
+			<g
+				inkscape:label="Layer 1"
+				inkscape:groupmode="layer"
+				id="layer1">
+				<path
+					sodipodi:nodetypes="cc"
+					style="fill:none;stroke:#000000;stroke-width:0.0281339px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+					d="M 1.5420259,10.163793 10.4375,31.906968"
+					id="line"
+					inkscape:label="Line" />
+				<rect
+					y="105.83333"
+					x="41.577377"
+					height="91.470238"
+					width="133.80357"
+					id="rect4550"
+					style="fill:none;stroke:#000000;stroke-width:0.3" />
+			</g>
 		</g>
 		<path
 			sodipodi:nodetypes="cc"
@@ -93,6 +111,12 @@ func Test_Unmarshal(t *testing.T) {
 		r := subj.Height
 
 		assert.Equal(t, "35cm", r)
+	})
+
+	t.Run("nested group", func(t *testing.T) {
+		r := subj.G[0].G
+
+		assert.Len(t, r, 1)
 	})
 
 }
