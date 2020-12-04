@@ -8,13 +8,15 @@ type SVG struct {
 }
 
 type G struct {
-	Rect []Rect `xml:"rect"`
-	Path []Path `xml:"path"`
-	G    []G    `xml:"g"`
+	Rect      []Rect `xml:"rect"`
+	Path      []Path `xml:"path"`
+	G         []G    `xml:"g"`
+	Transform string `xml:"transform,attr"`
 }
 
 type Path struct {
-	D string `xml:"d,attr"`
+	D         string `xml:"d,attr"`
+	Transform string `xml:"transform,attr"`
 }
 
 type Rect struct {

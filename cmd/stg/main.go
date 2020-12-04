@@ -46,7 +46,7 @@ func main() {
 			&cli.Float64Flag{Name: flagThreshold, Value: 4.0, Usage: "Minimum line length for fill pattern."},
 			&cli.Float64Flag{Name: flagDpi, Value: 96.0, Usage: "DPI of the rasterized SVG image. Used to calculate the fill pattern."},
 			&cli.StringFlag{Name: flagInkscapePath, Value: "", Usage: "The path to a inkscape commandline binary version >= 1.x"},
-			&cli.StringSliceFlag{Name: flagFill, Value: nil, Usage: "Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255."},
+			&cli.StringSliceFlag{Name: flagFill, Value: nil, Usage: "Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255. If not specified no fill data is generated."},
 		},
 		Action: func(c *cli.Context) error {
 			curveSpeed := c.Float64(flagCurveSpeed)

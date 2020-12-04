@@ -7,7 +7,7 @@
 - [x] handle closepath command
 - [x] translate SVG origin to plotter origin (top left to bottom left)
 - [x] handle deep group nesting
-- [ ] handle transform and matrix
+- [x] handle transform and matrix
 - [ ] add line, rectangle, ellipse, circle support
 - [ ] save latest options into file, by svg name for future use
    - [ ] alter options via cmd line if needed (kind of templating)
@@ -48,7 +48,6 @@ GLOBAL OPTIONS:
    --threshold value    Minimum line length for fill pattern. (default: 4)
    --dpi value          DPI of the rasterized SVG image. Used to calculate the fill pattern. (default: 96)
    --inkscape value     The path to a inkscape commandline binary version >= 1.x
-   --no-fill            Set to disable filling the shapes with patterns. (default: false)
-   --fill value         Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255. (default: "45,255,0,0")
+   --fill value         Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255.
    --help, -h           show help (default: false)
    ```

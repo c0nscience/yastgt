@@ -6,4 +6,5 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/stretchr/testify v1.6.1
 	github.com/urfave/cli/v2 v2.2.0
+	gonum.org/v1/gonum v0.8.2
 )
