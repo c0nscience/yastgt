@@ -19,15 +19,3 @@ func MoveTo(s string) svg.Point {
 	p.MoveTo = true
 	return p
 }
-
-func RelPoint(s string) svg.Point {
-	p := Point(s)
-	p.Rel = true
-	return p
-}
-
-func RelMoveTo(s string) svg.Point {
-	p := RelPoint(s)
-	p.MoveTo = true
-	return p
-}

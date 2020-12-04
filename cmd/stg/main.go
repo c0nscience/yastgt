@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 
@@ -39,7 +40,7 @@ func main() {
 		Usage: "Generates GCode from SVG",
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: flagSvgFilePath, Usage: "Path to the SVG file to generate GCode from.", Required: true},
-			&cli.StringFlag{Name: flagOutFilePath, Usage: "Path to the output GCode file.", Required: true},
+			&cli.StringFlag{Name: flagOutFilePath, Usage: "Path to the output GCode file. If not specified a .gcode file with the same name is created in the same folder."},
 			&cli.Float64Flag{Name: flagCurveSpeed, Value: 3000.0, Usage: "Divisor to normalize the speed of curves."},
 			&cli.Float64Flag{Name: flagLinearSpeed, Value: 4000.0, Usage: "Flat feed value for linear move commands."},
 			&cli.Float64Flag{Name: flagGap, Value: 10.0, Usage: "Gap between fill lines."},
@@ -101,6 +102,11 @@ func main() {
 			transform.SetG5Speed(curveSpeed)
 			cmds := transform.Gcode(s)
 
+			if outFilePath == "" {
+				dir := path.Dir(svgFilePath)
+				name := strings.TrimSuffix(path.Base(svgFilePath), path.Ext(svgFilePath))
+				outFilePath = fmt.Sprintf("%s/%s.gcode", dir, name)
+			}
 			out, err := os.Create(outFilePath)
 			if err != nil {
 				return err

@@ -41,13 +41,13 @@ COMMANDS:
 
 GLOBAL OPTIONS:
    --svg value          Path to the SVG file to generate GCode from.
-   --out value          Path to the output GCode file.
+   --out value          Path to the output GCode file. If not specified a .gcode file with the same name is created in the same folder.
    --curveSpeed value   Divisor to normalize the speed of curves. (default: 3000)
    --linearSpeed value  Flat feed value for linear move commands. (default: 4000)
    --gap value          Gap between fill lines. (default: 10)
    --threshold value    Minimum line length for fill pattern. (default: 4)
    --dpi value          DPI of the rasterized SVG image. Used to calculate the fill pattern. (default: 96)
    --inkscape value     The path to a inkscape commandline binary version >= 1.x
-   --fill value         Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255.
+   --fill value         Defines the fill pattern via 'degrees,red,green,blue' with the color values in standard 0-255. If not specified no fill data is generated.
    --help, -h           show help (default: false)
-   ```
+```
