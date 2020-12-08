@@ -6,21 +6,15 @@ import (
 	"github.com/c0nscience/yastgt/pkg/parse/svg"
 )
 
-func Apply(trans []*mat.Dense, paths []svg.Path) []svg.Path {
+func Apply(trans []*mat.Dense, pts []svg.PointI) {
 	if len(trans) == 0 {
-		return paths
+		return
 	}
 
 	t := fold(trans)
-	res := []svg.Path{}
-	for _, p := range paths {
-		pts := []svg.PointI{}
-		for _, pt := range p.Points {
-			pts = append(pts, pt.Transform(t))
-		}
-		res = append(res, svg.Path{Points: pts})
+	for _, s := range pts {
+		s.Transform(t)
 	}
-	return res
 }
 
 func fold(trans []*mat.Dense) *mat.Dense {

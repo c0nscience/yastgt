@@ -22,7 +22,7 @@ func SetG5Speed(i float64) {
 func Gcode(svg svg.SVG) []gcode.Cmd {
 	res := append([]gcode.Cmd{}, head()...)
 
-	res = append(res, fromPath(svg.Path, svg.Height)...)
+	res = append(res, fromPoints(svg.Points, svg.Height)...)
 
 	res = append(res, penUp...)
 
@@ -40,44 +40,46 @@ func head() []gcode.Cmd {
 	return res
 }
 
-func fromPath(pths []svg.Path, h float64) []gcode.Cmd {
+func fromPoints(pts []svg.PointI, h float64) []gcode.Cmd {
 	res := []gcode.Cmd{}
 	var cp svg.PointI
-	for _, pth := range pths {
-		for _, p := range pth.Points {
-			p = p.ToPlotterCoord(h)
-			switch pt := p.(type) {
-			case svg.Point:
-				if pt.MoveTo {
-					res = append(res, penUp...)
-				}
-
-				res = append(res, gcode.G0(pt, g0Speed))
-
-				if pt.MoveTo {
-					res = append(res, penDwn...)
-				}
-			case svg.CubicPoint:
-				length := bezier.Length(cp.CurrPt(), pt)
-				res = append(res, gcode.G5(pt, cp.CurrPt(), g5Speed/length))
+	for _, p := range pts {
+		p.ToPlotterCoord(h)
+		switch pt := p.(type) {
+		case *svg.Point:
+			if pt.MoveTo {
+				res = append(res, penUp...)
 			}
-			cp = p
+
+			res = append(res, gcode.G0(pt, g0Speed))
+
+			if pt.MoveTo {
+				res = append(res, penDwn...)
+			}
+		case *svg.CubicPoint:
+			length := bezier.Length(cp.CurrPt(), pt)
+			res = append(res, gcode.G5(pt, cp.CurrPt(), g5Speed/length))
+		case *svg.CirclePoint:
+			res = append(res, penUp...)
+			res = append(res, gcode.G0(pt.CP, g0Speed))
+			res = append(res, penDwn...)
+			res = append(res, gcode.G2(pt))
 		}
+		cp = p
 	}
 
 	return res
 }
 
 func home() []gcode.Cmd {
-	res := []gcode.Cmd{}
+	return []gcode.Cmd{
+		"M906 X200",
+		"M906 Y200",
+		"M906 I1 Y200",
+		gcode.G28("XY"),
+		"M906 X800",
+		"M906 Y800",
+		"M906 I1 Y800",
+	}
 
-	res = append(res, "M906 X200")
-	res = append(res, "M906 Y200")
-	res = append(res, "M906 I1 Y200")
-	res = append(res, gcode.G28("XY"))
-	res = append(res, "M906 X800")
-	res = append(res, "M906 Y800")
-	res = append(res, "M906 I1 Y800")
-
-	return res
 }

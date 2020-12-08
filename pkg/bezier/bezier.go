@@ -16,7 +16,7 @@ func point(t, start, c1, c2, end float64) float64 {
 		end*t*t*t
 }
 
-func Length(start svg.Point, c svg.CubicPoint) float64 {
+func Length(start *svg.Point, c *svg.CubicPoint) float64 {
 	var p svg.Point
 	var prevP svg.Point
 	steps := 10

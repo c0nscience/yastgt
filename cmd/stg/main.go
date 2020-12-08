@@ -94,7 +94,7 @@ func main() {
 
 					pattern.SetColor(color.NRGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: 255})
 					pattern.SetDegrees(degrees)
-					s.Path = append(s.Path, pattern.Diagonal(img)...)
+					s.Points = append(s.Points, pattern.Diagonal(img)...)
 				}
 			}
 

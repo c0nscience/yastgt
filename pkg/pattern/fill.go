@@ -39,7 +39,7 @@ var maxX float64
 var maxY float64
 var bwd bool
 
-func Diagonal(img image.Image) []svg.Path {
+func Diagonal(img image.Image) []svg.PointI {
 	bounds := img.Bounds()
 	maxX = float64(bounds.Max.X)
 	maxY = float64(bounds.Max.Y)
@@ -52,16 +52,13 @@ func Diagonal(img image.Image) []svg.Path {
 		lines = counterClockwise(img, bounds)
 	}
 
-	res := []svg.Path{}
+	res := []svg.PointI{}
 	pxToMM := unit.PxToMM(dpi)
 	for _, trace := range lines {
 		for _, line := range trace {
-			res = append(res, svg.Path{
-				Points: []svg.PointI{
-					svg.Point{X: pxToMM(px(line.start.x)), Y: pxToMM(px(line.start.y)), MoveTo: true},
-					svg.Point{X: pxToMM(px(line.end.x)), Y: pxToMM(px(line.end.y))},
-				},
-			})
+			res = append(res,
+				&svg.Point{X: pxToMM(px(line.start.x)), Y: pxToMM(px(line.start.y)), MoveTo: true},
+				&svg.Point{X: pxToMM(px(line.end.x)), Y: pxToMM(px(line.end.y))})
 
 		}
 	}

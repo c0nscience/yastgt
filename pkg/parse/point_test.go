@@ -17,9 +17,5 @@ func Test_Point(t *testing.T) {
 	subj := parse.Point(data)
 
 	// then
-	assert.Equal(t, svg.Point{X: 4, Y: 9}, subj)
-
-	t.Run("test value with exponent sign in it", func(t *testing.T) {
-
-	})
+	assert.Equal(t, &svg.Point{X: 4, Y: 9}, subj)
 }

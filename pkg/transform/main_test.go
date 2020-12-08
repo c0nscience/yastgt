@@ -3,42 +3,42 @@ package transform_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
+	"github.com/c0nscience/yastgt/pkg/parse"
 	"github.com/c0nscience/yastgt/pkg/parse/svg"
+	"github.com/c0nscience/yastgt/pkg/reader/xml"
 	"github.com/c0nscience/yastgt/pkg/transform"
 	"github.com/c0nscience/yastgt/pkg/transform/gcode"
-	"github.com/stretchr/testify/assert"
 )
 
 func Test_Transform(t *testing.T) {
 	// given
 	s := svg.SVG{
 		Height: 20,
-		Path: []svg.Path{
-			{
-				Points: []svg.PointI{
-					svg.Point{X: 0.0, Y: 0.0},
-					svg.Point{X: 10.0, Y: 0.0},
-					svg.Point{X: 10.0, Y: 10.0},
-					svg.Point{X: 0.0, Y: 10.0},
-					svg.Point{X: 0.0, Y: 0.0},
-					svg.Point{X: 2, Y: 2, MoveTo: true},
-					svg.CubicPoint{
-						P1: svg.Point{X: 1, Y: 4},
-						P2: svg.Point{X: 3, Y: 0},
-						CP: svg.Point{X: 2, Y: 2},
-					},
-				},
+		Points: []svg.PointI{
+			&svg.Point{X: 0.0, Y: 0.0},
+			&svg.Point{X: 10.0, Y: 0.0},
+			&svg.Point{X: 10.0, Y: 10.0},
+			&svg.Point{X: 0.0, Y: 10.0},
+			&svg.Point{X: 0.0, Y: 0.0},
+			&svg.Point{X: 2, Y: 2, MoveTo: true},
+			&svg.CubicPoint{
+				P1: &svg.Point{X: 1, Y: 4},
+				P2: &svg.Point{X: 3, Y: 0},
+				CP: &svg.Point{X: 2, Y: 2},
 			},
-			{
-				Points: []svg.PointI{
-					svg.Point{X: 10, Y: 10, MoveTo: true},
-					svg.Point{X: 5, Y: 2},
-					svg.Point{X: 7, Y: 8},
-					svg.Point{X: 2, Y: 2},
-					svg.Point{X: 14, Y: 10},
-					svg.Point{X: 42, Y: 21},
-				},
-			},
+			&svg.Point{X: 10, Y: 10, MoveTo: true},
+			&svg.Point{X: 5, Y: 2},
+			&svg.Point{X: 7, Y: 8},
+			&svg.Point{X: 2, Y: 2},
+			&svg.Point{X: 14, Y: 10},
+			&svg.Point{X: 42, Y: 21},
+			parse.Circle(xml.Circle{
+				CX: 23.4,
+				CY: 16.4,
+				R:  5,
+			}),
 		},
 	}
 
@@ -82,6 +82,14 @@ func Test_Transform(t *testing.T) {
 		gcode.Cmd("G0 F2000.00 X2.0 Y18.0"),
 		gcode.Cmd("G0 F2000.00 X14.0 Y10.0"),
 		gcode.Cmd("G0 F2000.00 X42.0 Y-1.0"),
+		gcode.Cmd("M400"),
+		gcode.Cmd("M280 P0 S130"),
+		gcode.Cmd("M400"),
+		gcode.Cmd("G0 F2000.00 X28.4 Y3.6"),
+		gcode.Cmd("M400"),
+		gcode.Cmd("M280 P0 S90"),
+		gcode.Cmd("M400"),
+		gcode.Cmd("G2 I-5.0 J0.0"),
 		gcode.Cmd("M400"),
 		gcode.Cmd("M280 P0 S130"),
 		gcode.Cmd("M400"),

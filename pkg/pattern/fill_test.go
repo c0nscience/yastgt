@@ -32,61 +32,61 @@ func Test_Fill(t *testing.T) {
 		moveTo := moveToExtractor(subj)
 
 		t.Run("starting from max Y position", func(t *testing.T) {
-			assert.InDelta(t, 41.7, x(0, 0), delta)
-			assert.InDelta(t, 98.29, y(0, 0), delta)
-			assert.True(t, moveTo(0, 0))
-			assert.InDelta(t, 45, x(0, 1), delta)
-			assert.InDelta(t, 101, y(0, 1), delta)
+			assert.InDelta(t, 41.7, x(0), delta)
+			assert.InDelta(t, 98.29, y(0), delta)
+			assert.True(t, moveTo(0))
+			assert.InDelta(t, 45, x(1), delta)
+			assert.InDelta(t, 101, y(1), delta)
 
-			assert.InDelta(t, 66, x(1, 0), delta)
-			assert.InDelta(t, 108, y(1, 0), delta)
-			assert.True(t, moveTo(1, 0))
-			assert.InDelta(t, 48.8, x(1, 1), delta)
-			assert.InDelta(t, 91, y(1, 1), delta)
+			assert.InDelta(t, 66, x(2), delta)
+			assert.InDelta(t, 108, y(2), delta)
+			assert.True(t, moveTo(2))
+			assert.InDelta(t, 48.8, x(3), delta)
+			assert.InDelta(t, 91, y(3), delta)
 
-			assert.InDelta(t, 55.8, x(2, 0), delta)
-			assert.InDelta(t, 84, y(2, 0), delta)
-			assert.True(t, moveTo(2, 0))
-			assert.InDelta(t, 87, x(2, 1), delta)
-			assert.InDelta(t, 115, y(2, 1), delta)
+			assert.InDelta(t, 55.8, x(4), delta)
+			assert.InDelta(t, 84, y(4), delta)
+			assert.True(t, moveTo(4))
+			assert.InDelta(t, 87, x(5), delta)
+			assert.InDelta(t, 115, y(5), delta)
 
-			assert.InDelta(t, 108, x(3, 0), delta)
-			assert.InDelta(t, 122, y(3, 0), delta)
-			assert.True(t, moveTo(3, 0))
-			assert.InDelta(t, 62.9, x(3, 1), delta)
-			assert.InDelta(t, 77, y(3, 1), delta)
+			assert.InDelta(t, 108, x(6), delta)
+			assert.InDelta(t, 122, y(6), delta)
+			assert.True(t, moveTo(6))
+			assert.InDelta(t, 62.9, x(7), delta)
+			assert.InDelta(t, 77, y(7), delta)
 
-			assert.InDelta(t, 70, x(4, 0), delta)
-			assert.InDelta(t, 70, y(4, 0), delta)
-			assert.True(t, moveTo(4, 0))
-			assert.InDelta(t, 129.8, x(4, 1), delta)
-			assert.InDelta(t, 129.8, y(4, 1), delta)
+			assert.InDelta(t, 70, x(8), delta)
+			assert.InDelta(t, 70, y(8), delta)
+			assert.True(t, moveTo(8))
+			assert.InDelta(t, 129.8, x(9), delta)
+			assert.InDelta(t, 129.8, y(9), delta)
 		})
 
 		t.Run("clockwise over into x direction", func(t *testing.T) {
-			assert.InDelta(t, 122.8, x(5, 0), delta)
-			assert.InDelta(t, 108.81, y(5, 0), delta)
-			assert.True(t, moveTo(5, 0))
-			assert.InDelta(t, 77.1, x(5, 1), delta)
-			assert.InDelta(t, 62.93, y(5, 1), delta)
+			assert.InDelta(t, 122.8, x(10), delta)
+			assert.InDelta(t, 108.81, y(10), delta)
+			assert.True(t, moveTo(10))
+			assert.InDelta(t, 77.1, x(11), delta)
+			assert.InDelta(t, 62.93, y(11), delta)
 
-			assert.InDelta(t, 84.14, x(6, 0), delta)
-			assert.InDelta(t, 56.09, y(6, 0), delta)
-			assert.True(t, moveTo(6, 0))
-			assert.InDelta(t, 115.89, x(6, 1), delta)
-			assert.InDelta(t, 87.71, y(6, 1), delta)
+			assert.InDelta(t, 84.14, x(12), delta)
+			assert.InDelta(t, 56.09, y(12), delta)
+			assert.True(t, moveTo(12))
+			assert.InDelta(t, 115.89, x(13), delta)
+			assert.InDelta(t, 87.71, y(13), delta)
 
-			assert.InDelta(t, 108.74, x(7, 0), delta)
-			assert.InDelta(t, 66.54, y(7, 0), delta)
-			assert.True(t, moveTo(7, 0))
-			assert.InDelta(t, 91.55, x(7, 1), delta)
-			assert.InDelta(t, 48.82, y(7, 1), delta)
+			assert.InDelta(t, 108.74, x(14), delta)
+			assert.InDelta(t, 66.54, y(14), delta)
+			assert.True(t, moveTo(14))
+			assert.InDelta(t, 91.55, x(15), delta)
+			assert.InDelta(t, 48.82, y(15), delta)
 
-			assert.InDelta(t, 98.29, x(8, 0), delta)
-			assert.InDelta(t, 41.80, y(8, 0), delta)
-			assert.True(t, moveTo(8, 0))
-			assert.InDelta(t, 101.34, x(8, 1), delta)
-			assert.InDelta(t, 44.98, y(8, 1), delta)
+			assert.InDelta(t, 98.29, x(16), delta)
+			assert.InDelta(t, 41.80, y(16), delta)
+			assert.True(t, moveTo(16))
+			assert.InDelta(t, 101.34, x(17), delta)
+			assert.InDelta(t, 44.98, y(17), delta)
 
 		})
 
@@ -107,29 +107,29 @@ func Test_Fill(t *testing.T) {
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
 
-		assert.InDelta(t, 41.7, x(0, 0), delta)
-		assert.InDelta(t, 98.29, y(0, 0), delta)
-		assert.True(t, moveTo(0, 0))
-		assert.InDelta(t, 45, x(0, 1), delta)
-		assert.InDelta(t, 101, y(0, 1), delta)
+		assert.InDelta(t, 41.7, x(0), delta)
+		assert.InDelta(t, 98.29, y(0), delta)
+		assert.True(t, moveTo(0))
+		assert.InDelta(t, 45, x(1), delta)
+		assert.InDelta(t, 101, y(1), delta)
 
-		assert.InDelta(t, 53, x(1, 0), delta)
-		assert.InDelta(t, 108.8, y(1, 0), delta)
-		assert.True(t, moveTo(1, 0))
-		assert.InDelta(t, 126.72, x(1, 1), delta)
-		assert.InDelta(t, 183, y(1, 1), delta)
+		assert.InDelta(t, 53, x(2), delta)
+		assert.InDelta(t, 108.8, y(2), delta)
+		assert.True(t, moveTo(2))
+		assert.InDelta(t, 126.72, x(3), delta)
+		assert.InDelta(t, 183, y(3), delta)
 
-		assert.InDelta(t, 55.8, x(4, 0), delta)
-		assert.InDelta(t, 84, y(4, 0), delta)
-		assert.True(t, moveTo(4, 0))
-		assert.InDelta(t, 87, x(4, 1), delta)
-		assert.InDelta(t, 115, y(4, 1), delta)
+		assert.InDelta(t, 55.8, x(8), delta)
+		assert.InDelta(t, 84, y(8), delta)
+		assert.True(t, moveTo(8))
+		assert.InDelta(t, 87, x(9), delta)
+		assert.InDelta(t, 115, y(9), delta)
 
-		assert.InDelta(t, 93.73, x(5, 0), delta)
-		assert.InDelta(t, 121.98, y(5, 0), delta)
-		assert.True(t, moveTo(5, 0))
-		assert.InDelta(t, 140.78, x(5, 1), delta)
-		assert.InDelta(t, 169.08, y(5, 1), delta)
+		assert.InDelta(t, 93.73, x(10), delta)
+		assert.InDelta(t, 121.98, y(10), delta)
+		assert.True(t, moveTo(10))
+		assert.InDelta(t, 140.78, x(11), delta)
+		assert.InDelta(t, 169.08, y(11), delta)
 
 	})
 
@@ -149,17 +149,17 @@ func Test_Fill(t *testing.T) {
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
 
-		assert.InDelta(t, 44.9, x(0, 0), delta)
-		assert.InDelta(t, 95.42, y(0, 0), delta)
-		assert.True(t, moveTo(0, 0))
-		assert.InDelta(t, 68, x(0, 1), delta)
-		assert.InDelta(t, 109, y(0, 1), delta)
+		assert.InDelta(t, 44.9, x(0), delta)
+		assert.InDelta(t, 95.42, y(0), delta)
+		assert.True(t, moveTo(0))
+		assert.InDelta(t, 68, x(1), delta)
+		assert.InDelta(t, 109, y(1), delta)
 
-		assert.InDelta(t, 74.18, x(4, 0), delta)
-		assert.InDelta(t, 66.04, y(4, 0), delta)
-		assert.True(t, moveTo(4, 0))
-		assert.InDelta(t, 117, x(4, 1), delta)
-		assert.InDelta(t, 90.83, y(4, 1), delta)
+		assert.InDelta(t, 74.18, x(8), delta)
+		assert.InDelta(t, 66.04, y(8), delta)
+		assert.True(t, moveTo(8))
+		assert.InDelta(t, 117, x(9), delta)
+		assert.InDelta(t, 90.83, y(9), delta)
 	})
 
 	t.Run("should draw 90 degree pattern with 10 mm distance", func(t *testing.T) {
@@ -177,11 +177,11 @@ func Test_Fill(t *testing.T) {
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
 
-		assert.InDelta(t, 50.27, x(0, 0), delta)
-		assert.InDelta(t, 89.92, y(0, 0), delta)
-		assert.True(t, moveTo(0, 0))
-		assert.InDelta(t, 50.27, x(0, 1), delta)
-		assert.InDelta(t, 103.35, y(0, 1), delta)
+		assert.InDelta(t, 50.27, x(0), delta)
+		assert.InDelta(t, 89.92, y(0), delta)
+		assert.True(t, moveTo(0))
+		assert.InDelta(t, 50.27, x(1), delta)
+		assert.InDelta(t, 103.35, y(1), delta)
 
 	})
 
@@ -200,11 +200,11 @@ func Test_Fill(t *testing.T) {
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
 
-		assert.InDelta(t, 284.8, x(9, 0), delta)
-		assert.InDelta(t, 251.2, y(9, 0), delta)
-		assert.True(t, moveTo(9, 0))
-		assert.InDelta(t, 105.5, x(9, 1), delta)
-		assert.InDelta(t, 251.2, y(9, 1), delta)
+		assert.InDelta(t, 284.8, x(18), delta)
+		assert.InDelta(t, 251.2, y(18), delta)
+		assert.True(t, moveTo(18))
+		assert.InDelta(t, 105.5, x(19), delta)
+		assert.InDelta(t, 251.2, y(19), delta)
 
 	})
 
@@ -223,19 +223,19 @@ func Test_Fill(t *testing.T) {
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
 
-		assert.Len(t, subj, 33)
+		assert.Len(t, subj, 66)
 
-		assert.InDelta(t, 335, x(0, 0), delta)
-		assert.InDelta(t, 185, y(0, 0), delta)
-		assert.True(t, moveTo(0, 0))
-		assert.InDelta(t, 313.5, x(0, 1), delta)
-		assert.InDelta(t, 223, y(0, 1), delta)
+		assert.InDelta(t, 335, x(0), delta)
+		assert.InDelta(t, 185, y(0), delta)
+		assert.True(t, moveTo(0))
+		assert.InDelta(t, 313.5, x(1), delta)
+		assert.InDelta(t, 223, y(1), delta)
 
-		assert.InDelta(t, 153, x(6, 0), delta)
-		assert.InDelta(t, 301, y(6, 0), delta)
-		assert.True(t, moveTo(6, 0))
-		assert.InDelta(t, 201, x(6, 1), delta)
-		assert.InDelta(t, 218, y(6, 1), delta)
+		assert.InDelta(t, 153, x(12), delta)
+		assert.InDelta(t, 301, y(12), delta)
+		assert.True(t, moveTo(12))
+		assert.InDelta(t, 201, x(13), delta)
+		assert.InDelta(t, 218, y(13), delta)
 
 	})
 
@@ -254,37 +254,37 @@ func Test_Fill(t *testing.T) {
 		y := yExtractor(subj)
 		moveTo := moveToExtractor(subj)
 
-		assert.Len(t, subj, 33)
+		assert.Len(t, subj, 66)
 
-		assert.InDelta(t, 137, x(3, 0), delta)
-		assert.InDelta(t, 284, y(3, 0), delta)
-		assert.True(t, moveTo(3, 0))
-		assert.InDelta(t, 325.5, x(3, 1), delta)
-		assert.InDelta(t, 175.7, y(3, 1), delta)
+		assert.InDelta(t, 137, x(6), delta)
+		assert.InDelta(t, 284, y(6), delta)
+		assert.True(t, moveTo(6))
+		assert.InDelta(t, 325.5, x(7), delta)
+		assert.InDelta(t, 175.7, y(7), delta)
 
-		assert.InDelta(t, 105, x(17, 0), delta)
-		assert.InDelta(t, 187, y(17, 0), delta)
-		assert.True(t, moveTo(17, 0))
-		assert.InDelta(t, 67, x(17, 1), delta)
-		assert.InDelta(t, 209.5, y(17, 1), delta)
+		assert.InDelta(t, 105, x(34), delta)
+		assert.InDelta(t, 187, y(34), delta)
+		assert.True(t, moveTo(34))
+		assert.InDelta(t, 67, x(35), delta)
+		assert.InDelta(t, 209.5, y(35), delta)
 
 	})
 }
 
-func xExtractor(p []svg.Path) func(int, int) float64 {
-	return func(i int, j int) float64 {
-		return p[i].Points[j].CurrPt().X
+func xExtractor(p []svg.PointI) func(int) float64 {
+	return func(i int) float64 {
+		return p[i].CurrPt().X
 	}
 }
 
-func yExtractor(p []svg.Path) func(int, int) float64 {
-	return func(i int, j int) float64 {
-		return p[i].Points[j].CurrPt().Y
+func yExtractor(p []svg.PointI) func(int) float64 {
+	return func(i int) float64 {
+		return p[i].CurrPt().Y
 	}
 }
 
-func moveToExtractor(p []svg.Path) func(int, int) bool {
-	return func(i int, j int) bool {
-		return p[i].Points[j].CurrPt().MoveTo
+func moveToExtractor(p []svg.PointI) func(int) bool {
+	return func(i int) bool {
+		return p[i].CurrPt().MoveTo
 	}
 }

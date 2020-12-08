@@ -8,7 +8,7 @@
 - [x] translate SVG origin to plotter origin (top left to bottom left)
 - [x] handle deep group nesting
 - [x] handle transform and matrix
-- [ ] add line, rectangle, ellipse, circle support
+- [x] add line, rectangle, ellipse, circle support
 - [ ] save latest options into file, by svg name for future use
    - [ ] alter options via cmd line if needed (kind of templating)
       - cmd line param > file param
