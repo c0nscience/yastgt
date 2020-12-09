@@ -103,6 +103,8 @@ func Test_Transform(t *testing.T) {
 		gcode.Cmd("M18"),
 	}
 
+	transform.SetPenUpAngle(130)
+	transform.SetPenDownAngle(90)
 	// when
 	cmd := transform.Gcode(s)
 

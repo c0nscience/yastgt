@@ -42,6 +42,8 @@ COMMANDS:
 GLOBAL OPTIONS:
    --svg value          Path to the SVG file to generate GCode from.
    --out value          Path to the output GCode file. If not specified a .gcode file with the same name is created in the same folder.
+   --penUp value        Sets the angle for the pen servo of the pen UP state. (default: 150)
+   --penDown value      Sets the angle for the pen servo of the pen DOWN state. (default: 30)
    --curveSpeed value   Divisor to normalize the speed of curves. (default: 3000)
    --linearSpeed value  Flat feed value for linear move commands. (default: 4000)
    --gap value          Gap between fill lines. (default: 10)

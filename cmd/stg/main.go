@@ -30,6 +30,8 @@ const (
 	flagDpi          = "dpi"
 	flagInkscapePath = "inkscape"
 	flagFill         = "fill"
+	flagPenUp        = "penUp"
+	flagPenDown      = "penDown"
 	//flagPadding      = "padding"
 )
 
@@ -41,6 +43,8 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: flagSvgFilePath, Usage: "Path to the SVG file to generate GCode from.", Required: true},
 			&cli.StringFlag{Name: flagOutFilePath, Usage: "Path to the output GCode file. If not specified a .gcode file with the same name is created in the same folder."},
+			&cli.Int64Flag{Name: flagPenUp, Value: 150, Usage: "Sets the angle for the pen servo of the pen UP state."},
+			&cli.Int64Flag{Name: flagPenDown, Value: 30, Usage: "Sets the angle for the pen servo of the pen DOWN state."},
 			&cli.Float64Flag{Name: flagCurveSpeed, Value: 3000.0, Usage: "Divisor to normalize the speed of curves."},
 			&cli.Float64Flag{Name: flagLinearSpeed, Value: 4000.0, Usage: "Flat feed value for linear move commands."},
 			&cli.Float64Flag{Name: flagGap, Value: 10.0, Usage: "Gap between fill lines."},
@@ -59,6 +63,8 @@ func main() {
 			dpi := c.Float64(flagDpi)
 			inkscapePath := c.String(flagInkscapePath)
 			fills := c.StringSlice(flagFill)
+			penUp := c.Int64(flagPenUp)
+			penDown := c.Int64(flagPenDown)
 
 			b, err := ioutil.ReadFile(svgFilePath)
 			if err != nil {
@@ -100,6 +106,8 @@ func main() {
 
 			transform.SetG0Speed(linearSpeed)
 			transform.SetG5Speed(curveSpeed)
+			transform.SetPenUpAngle(penUp)
+			transform.SetPenDownAngle(penDown)
 			cmds := transform.Gcode(s)
 
 			if outFilePath == "" {
