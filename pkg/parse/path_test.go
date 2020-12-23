@@ -97,4 +97,22 @@ func Test_Path(t *testing.T) {
 		}, subj)
 
 	})
+
+	t.Run("should read a horizontal line command with multiple values", func(t *testing.T) {
+		x := path("H 47.2 290 139")
+
+		subj := parse.Path(x)
+
+		assert.Equal(t, []svg.PointI{
+			&svg.Point{X: 47.2, Y: 0},
+			&svg.Point{X: 290, Y: 0},
+			&svg.Point{X: 139, Y: 0},
+		}, subj)
+	})
+}
+
+func path(d string) xml.Path {
+	return xml.Path{
+		D: d,
+	}
 }

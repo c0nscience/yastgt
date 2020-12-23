@@ -43,7 +43,11 @@ func Path(p xml.Path) []svg.PointI {
 		case "H":
 			for _, prt := range prts[1:] {
 				x, _ := strconv.ParseFloat(prt, 64)
-				res = append(res, &svg.Point{X: x, Y: currPt.Y})
+				y := 0.0
+				if currPt != nil {
+					y = currPt.Y
+				}
+				res = append(res, &svg.Point{X: x, Y: y})
 			}
 		case "V":
 			for _, prt := range prts[1:] {
@@ -96,7 +100,7 @@ func splitIntoPairs(m string) []string {
 	m = strings.Trim(m, " ")
 	prts := strings.Split(m, " ")
 
-	if len(prts) == 2 {
+	if strings.ContainsAny(m, "HVLhvl") {
 		return prts
 	}
 

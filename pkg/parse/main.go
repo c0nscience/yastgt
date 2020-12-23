@@ -47,14 +47,12 @@ func fromPath(pths []xml.Path, trans []*mat.Dense) []svg.PointI {
 		transform.Apply(append(trans, transform.ParseTypes(p.Transform)...), pts)
 		res = append(res, pts...)
 	}
-	transform.Apply(trans, res)
 	return res
 }
 
 func fromLine(lines []xml.Line, trans []*mat.Dense) []svg.PointI {
 	res := []svg.PointI{}
 	for _, l := range lines {
-		trans = append(trans, transform.ParseTypes(l.Transform)...)
 		pts := Line(l)
 		transform.Apply(append(trans, transform.ParseTypes(l.Transform)...), pts)
 		res = append(res, pts...)
@@ -66,7 +64,6 @@ func fromLine(lines []xml.Line, trans []*mat.Dense) []svg.PointI {
 func fromRect(rects []xml.Rect, trans []*mat.Dense) []svg.PointI {
 	res := []svg.PointI{}
 	for _, r := range rects {
-		trans = append(trans, transform.ParseTypes(r.Transform)...)
 		pts := Rect(r)
 		transform.Apply(append(trans, transform.ParseTypes(r.Transform)...), pts)
 		res = append(res, pts...)
