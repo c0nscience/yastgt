@@ -20,7 +20,7 @@ func Path(p xml.Path) []svg.PointI {
 	wasClosed := false
 	for len(d) > 0 {
 		m := re.FindString(d)
-		prts := strings.Split(strings.Trim(m, " "), " ")
+		prts := splitIntoPairs(m)
 		currPt := cp(res)
 		if wasClosed {
 			initSubPathPt = currPt
@@ -90,4 +90,26 @@ func cp(arr []svg.PointI) *svg.Point {
 	}
 	lst := arr[len(arr)-1]
 	return lst.CurrPt()
+}
+
+func splitIntoPairs(m string) []string {
+	m = strings.Trim(m, " ")
+	prts := strings.Split(m, " ")
+
+	if len(prts) == 2 {
+		return prts
+	}
+
+	if strings.Contains(m, ",") {
+		return prts
+	}
+	res := []string{}
+	if (len(prts)-1)%2 == 0 {
+		res = append(res, prts[0])
+		tmp := prts[1:]
+		for i := 0; i < len(tmp); i = i + 2 {
+			res = append(res, strings.Join(tmp[i:i+2], ","))
+		}
+	}
+	return res
 }

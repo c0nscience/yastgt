@@ -27,6 +27,24 @@ func Test_Parse(t *testing.T) {
 		assert.InDelta(t, 1.0, subj.At(2, 2), delta)
 
 	})
+	t.Run("should return a matrix with space separated list", func(t *testing.T) {
+		s := "matrix(2 3 4 5 6 7)"
+
+		subj := transform.ParseTypes(s)[0]
+
+		assert.InDelta(t, 2.0, subj.At(0, 0), delta)
+		assert.InDelta(t, 3.0, subj.At(1, 0), delta)
+		assert.InDelta(t, 0.0, subj.At(2, 0), delta)
+
+		assert.InDelta(t, 4.0, subj.At(0, 1), delta)
+		assert.InDelta(t, 5.0, subj.At(1, 1), delta)
+		assert.InDelta(t, 0.0, subj.At(2, 1), delta)
+
+		assert.InDelta(t, 6.0, subj.At(0, 2), delta)
+		assert.InDelta(t, 7.0, subj.At(1, 2), delta)
+		assert.InDelta(t, 1.0, subj.At(2, 2), delta)
+
+	})
 	t.Run("should return a translation matrix with tx and ty", func(t *testing.T) {
 		s := "translate(2,3)"
 
@@ -42,6 +60,42 @@ func Test_Parse(t *testing.T) {
 
 		assert.InDelta(t, 2.0, subj.At(0, 2), delta)
 		assert.InDelta(t, 3.0, subj.At(1, 2), delta)
+		assert.InDelta(t, 1.0, subj.At(2, 2), delta)
+
+	})
+	t.Run("should return a translation matrix with tx and ty if space included", func(t *testing.T) {
+		s := "translate(2, 3)"
+
+		subj := transform.ParseTypes(s)[0]
+
+		assert.InDelta(t, 1.0, subj.At(0, 0), delta)
+		assert.InDelta(t, 0.0, subj.At(1, 0), delta)
+		assert.InDelta(t, 0.0, subj.At(2, 0), delta)
+
+		assert.InDelta(t, 0.0, subj.At(0, 1), delta)
+		assert.InDelta(t, 1.0, subj.At(1, 1), delta)
+		assert.InDelta(t, 0.0, subj.At(2, 1), delta)
+
+		assert.InDelta(t, 2.0, subj.At(0, 2), delta)
+		assert.InDelta(t, 3.0, subj.At(1, 2), delta)
+		assert.InDelta(t, 1.0, subj.At(2, 2), delta)
+
+	})
+	t.Run("should return a translation matrix with tx and ty if space and decimal digits included", func(t *testing.T) {
+		s := "translate(2.64, 3.78)"
+
+		subj := transform.ParseTypes(s)[0]
+
+		assert.InDelta(t, 1.0, subj.At(0, 0), delta)
+		assert.InDelta(t, 0.0, subj.At(1, 0), delta)
+		assert.InDelta(t, 0.0, subj.At(2, 0), delta)
+
+		assert.InDelta(t, 0.0, subj.At(0, 1), delta)
+		assert.InDelta(t, 1.0, subj.At(1, 1), delta)
+		assert.InDelta(t, 0.0, subj.At(2, 1), delta)
+
+		assert.InDelta(t, 2.64, subj.At(0, 2), delta)
+		assert.InDelta(t, 3.78, subj.At(1, 2), delta)
 		assert.InDelta(t, 1.0, subj.At(2, 2), delta)
 
 	})

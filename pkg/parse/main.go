@@ -28,15 +28,13 @@ func SVG(xml xml.SVG) svg.SVG {
 func fromGroup(grps []xml.G, trans []*mat.Dense) []svg.PointI {
 	res := []svg.PointI{}
 	for _, g := range grps {
-		trans = append(trans, transform.ParseTypes(g.Transform)...)
-		res = append(res, fromGroup(g.G, trans)...)
-	}
-
-	for _, g := range grps {
-		res = append(res, fromPath(g.Path, trans)...)
-		res = append(res, fromLine(g.Line, trans)...)
-		res = append(res, fromRect(g.Rect, trans)...)
-		res = append(res, fromCircle(g.Circle, trans)...)
+		t := trans
+		t = append(t, transform.ParseTypes(g.Transform)...)
+		res = append(res, fromGroup(g.G, t)...)
+		res = append(res, fromPath(g.Path, t)...)
+		res = append(res, fromLine(g.Line, t)...)
+		res = append(res, fromRect(g.Rect, t)...)
+		res = append(res, fromCircle(g.Circle, t)...)
 	}
 
 	return res

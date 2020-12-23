@@ -66,7 +66,12 @@ func parse(s string) ([]float64, string, int) {
 		return res, "", len(m[0])
 	}
 
-	prts := strings.Split(m[2], ",")
+	prts := []string{}
+	if strings.Contains(m[2], ",") {
+		prts = strings.Split(m[2], ",")
+	} else {
+		prts = strings.Split(m[2], " ")
+	}
 	for _, p := range prts {
 		res = append(res, toFloat(p))
 	}
